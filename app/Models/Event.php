@@ -11,4 +11,11 @@ class Event extends Model
 
     // Add 'start' and 'end' to the fillable property
     protected $fillable = ['title', 'description', 'start', 'end']; // <-- Add start and end here
+
+    public function users()
+{
+    return $this->belongsToMany(User::class);
 }
+}
+
+

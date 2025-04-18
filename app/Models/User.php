@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin', // Add is_admin to the fillable array
     ];
 
     /**
@@ -45,4 +46,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function events()
+    {
+        return $this->belongsToMany(\App\Models\Event::class)->withTimestamps();
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(\App\Models\User::class)->withTimestamps();
+    }
+
 }
