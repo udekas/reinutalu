@@ -10,7 +10,7 @@ class EventController extends Controller
     
     public function index()
     {
-        return response()->json(Event::all());
+        return Event::all();
     }
 
     public function store(Request $request)
@@ -19,6 +19,7 @@ class EventController extends Controller
         'title' => 'required|string|max:255',
         'start' => 'required|date|before:end',
         'end' => 'required|date|after:start',
+        'description' => 'nullable|string',
     ]);
 
     $event = Event::create($validated);
@@ -31,6 +32,7 @@ public function update(Request $request, Event $event)
         'title' => 'required|string|max:255',
         'start' => 'required|date|before:end',
         'end' => 'required|date|after:start',
+        'description' => 'nullable|string',
     ]);
 
     $event->update($validated);
