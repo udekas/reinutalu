@@ -49,12 +49,20 @@ class User extends Authenticatable
 
     public function events()
     {
-        return $this->belongsToMany(\App\Models\Event::class)->withTimestamps();
+        return $this->belongsToMany(Event::class)->withTimestamps();
     }
 
     public function users()
     {
-        return $this->belongsToMany(\App\Models\User::class)->withTimestamps();
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    // In User model (app/Models/User.php)
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin; // Assuming you have an is_admin field in your users table
+    }
+
 
 }

@@ -11,10 +11,15 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 
+// User dashboard route
 Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('UserDashboard'); // User dashboard
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Admin dashboard route
+Route::get('admin/dashboard', function () {
+    return Inertia::render('AdminDashboard'); // Admin dashboard
+})->middleware(['auth', 'admin'])->name('admin.dashboard');
 
 Route::get('/test', function () {
     return response()->json(['message' => 'API is working!']);
@@ -34,14 +39,13 @@ Route::middleware('auth')->group(function () {
         Route::post('events', [AdminEventController::class, 'store']);
         Route::put('events/{event}', [AdminEventController::class, 'update']);
         Route::delete('events/{event}', [AdminEventController::class, 'destroy']);
+        Route::get('events/{event}', [AdminEventController::class, 'show']);
     });
 
     // User event actions
     Route::post('events/{eventId}/register', [EventRegistrationController::class, 'register']);
     Route::get('my-events', [EventRegistrationController::class, 'myEvents']);
 });
-
-
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

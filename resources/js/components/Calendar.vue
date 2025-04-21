@@ -3,6 +3,7 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { VueCal, type CalendarEvent } from 'vue-cal';
 import 'vue-cal/style';
+import EventUsers from './EventUsers.vue';
 
 const events = ref<CalendarEvent[]>([]);
 
@@ -100,7 +101,6 @@ const handleEventDelete = async (event: CalendarEvent) => {
     }
 };
 
-
 const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     const hour = Math.floor(i / 2);
     const minute = i % 2 === 0 ? '00' : '30';
@@ -165,6 +165,14 @@ const newEvent = ref({
                     <span v-if="props.event.description" style="font-size: 0.8rem; color: #666">
                         {{ props.event.description }}
                     </span>
+                </div>
+                <div>
+                    <strong>{{ props.event.title }}</strong
+                    ><br />
+                    <span v-if="props.event.description" style="font-size: 0.8rem; color: #666">
+                        {{ props.event.description }}
+                    </span>
+                    <EventUsers v-if="props.event.users" :users="props.event.users" />
                 </div>
             </template>
         </VueCal>

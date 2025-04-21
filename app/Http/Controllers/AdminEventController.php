@@ -17,7 +17,7 @@ class AdminEventController extends Controller
     public function index()
     {
         // Get all events to show on the admin panel
-        return Event::all();
+         return Event::with('users:id,name,email')->get();
     }
 
     public function store(Request $request)
@@ -51,5 +51,12 @@ class AdminEventController extends Controller
         // Delete event
         $event->delete();
         return response()->json(['message' => 'Event deleted']);
+    }
+
+    public function show(Event $event)
+    {
+        return response()->json([
+            'event' => $event->load('users'),
+        ]);
     }
 }
