@@ -46,4 +46,16 @@ public function update(Request $request, Event $event)
         $event->delete();
         return response()->json(['message' => 'Event deleted']);
     }
+
+    public function getUsers($eventId)
+{
+    $event = Event::find($eventId);
+
+    if (!$event) {
+        return response()->json(['error' => 'Event not found'], 404);
+    }
+
+    // Assuming there is a 'users' relationship on the Event model
+    return response()->json($event->users);
+}
 }

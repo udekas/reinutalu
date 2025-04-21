@@ -31,6 +31,7 @@ Route::post('/events', [EventController::class, 'store']);
 Route::put('/events/{event}', [EventController::class, 'update']);
 Route::delete('/events/{event}', [EventController::class, 'destroy']);
 
+Route::get('/events/{event}/users', [EventController::class, 'getUsers']);
 // Protected routes
 Route::middleware('auth')->get('/user', function (Request $request) {
     return response()->json($request->user());
@@ -44,6 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::put('events/{event}', [AdminEventController::class, 'update']);
         Route::delete('events/{event}', [AdminEventController::class, 'destroy']);
         Route::get('events/{event}', [AdminEventController::class, 'show']);
+
     });
 
     // User event actions

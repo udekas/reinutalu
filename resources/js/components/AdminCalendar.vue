@@ -3,11 +3,12 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { VueCal, type CalendarEvent } from 'vue-cal';
 import 'vue-cal/style';
-import EventUsers from './EventUsers.vue';
+import Popup from './Popup.vue'; // Import the Popup component for showing user list
 
 const events = ref<CalendarEvent[]>([]);
-
 const showForm = ref(false);
+const popupVisible = ref(false); // Control popup visibility
+const selectedEvent = ref<CalendarEvent | null>(null); // Store the selected event data
 
 // Event data object
 const newEvent = ref({
@@ -18,6 +19,7 @@ const newEvent = ref({
     description: '',
 });
 
+// Fetch events from API
 const fetchEvents = async () => {
     try {
         const res = await axios.get('/events');
@@ -108,6 +110,23 @@ const handleEventDelete = async (event: CalendarEvent) => {
     }
 };
 
+// Event click handler
+const handleEventClick = (props: { event: CalendarEvent }) => {
+    const event = props.event;
+    if (event && event.id) {
+        selectedEvent.value = event; // Set the event data for the popup
+        popupVisible.value = true; // Show the popup
+    } else {
+        console.error('Event is invalid:', event); // Log an error if the event is invalid
+    }
+};
+
+// Handle closing the popup
+const closePopup = () => {
+    popupVisible.value = false;
+    selectedEvent.value = null;
+};
+
 const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     const hour = Math.floor(i / 2);
     const minute = i % 2 === 0 ? '00' : '30';
@@ -124,23 +143,19 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
         <div v-if="showForm" class="event-form">
             <input v-model="newEvent.title" type="text" placeholder="Title" required />
             <input v-model="newEvent.date" type="date" required />
-
             <textarea v-model="newEvent.description" placeholder="Description" class="description-input"></textarea>
-
             <select v-model="newEvent.startTime" required>
                 <option disabled value="">Start Time</option>
                 <option v-for="time in timeOptions" :key="time" :value="time">
                     {{ time }}
                 </option>
             </select>
-
             <select v-model="newEvent.endTime" required>
                 <option disabled value="">End Time</option>
                 <option v-for="time in timeOptions" :key="time" :value="time">
                     {{ time }}
                 </option>
             </select>
-
             <button @click="handleAddEvent" class="submit-btn">Save</button>
         </div>
 
@@ -156,29 +171,32 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             :time-to="18 * 60"
             :time-step="30"
             :snap-to-interval="30"
+            @event-click="handleEventClick"
         >
             <template #event="props">
                 <div>
-                    <strong>{{ props.event.title }}</strong
-                    ><br />
+                    <strong>{{ props.event.title }}</strong>
+                    <br />
                     <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd">
                         {{ props.event.description }}
                     </span>
                 </div>
-                <div v-if="props.event.users?.length > 0">
-                    <EventUsers :users="props.event.users" />
-                </div>
             </template>
         </VueCal>
+
+        <!-- Popup for displaying registered users -->
+        <Popup v-if="popupVisible" :event="selectedEvent" :visible="popupVisible" @close="closePopup" />
     </div>
 </template>
 
 <style scoped>
+/* Style your calendar container and form */
 .calendar-container {
     padding: 1rem;
     font-family: Arial, sans-serif;
 }
 
+/* Add button and styling for form */
 .add-btn {
     background-color: #4f46e5;
     color: white;
@@ -189,6 +207,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     cursor: pointer;
 }
 
+/* Event form styling */
 .event-form {
     display: flex;
     gap: 1rem;
@@ -196,18 +215,11 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     margin-bottom: 1rem;
 }
 
-.event-form input {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-}
-
+.event-form input,
 .event-form select {
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 6px;
-    background-color: white;
-    font-size: 1rem;
 }
 
 .submit-btn {
