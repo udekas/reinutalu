@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class EventRegistrationController extends Controller
 {
+    // Show all available events to the user
     public function index()
     {
-        // Show all available events to the user
         return Event::all();
     }
 
+    // Register the user for a specific event
     public function register(Request $request, $eventId)
     {
         $user = Auth::user();
@@ -21,8 +22,9 @@ class EventRegistrationController extends Controller
         // Find the event, or throw 404 if not found
         $event = Event::findOrFail($eventId);
 
-        // Check if the user is already registered
-        if (!$user->events->contains($eventId)) {
+        // Check if the user is already registered in the pivot table
+        if (!$user->events()->where('event_id', $eventId)->exists()) {
+            // Attach the event to the user
             $user->events()->attach($eventId);
             return response()->json(['message' => 'Registered for the event successfully']);
         }
@@ -30,9 +32,29 @@ class EventRegistrationController extends Controller
         return response()->json(['message' => 'You are already registered for this event'], 409);
     }
 
-    public function myEvents()
+    // Unregister the user from a specific event
+    public function unregister(Request $request, $eventId)
     {
-        // Return all events the user has registered for
-        return Auth::user()->events;
+        $user = Auth::user();
+
+        // Find the event, or throw 404 if not found
+        $event = Event::findOrFail($eventId);
+
+        // Detach the event from the user
+        $user->events()->detach($eventId);
+
+        return response()->json(['message' => 'Unregistered from the event successfully']);
+    }
+
+    // Get the events the currently authenticated user is registered for
+    public function myEvents(Request $request)
+    {
+        // Get the currently authenticated user
+        $user = $request->user();
+
+        // Fetch all events the user is registered for
+        $events = $user->events;
+
+        return response()->json($events);
     }
 }

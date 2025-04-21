@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineEmits } from 'vue';
 import { VueCal, type CalendarEvent } from 'vue-cal';
 import 'vue-cal/style';
 
-// Simulating auth user from a global source (replace this with actual logic if needed)
-const user = ref({ id: 1 }); // Replace this with actual user data from backend (e.g., props or API)
+const emit = defineEmits(['registerEvent', 'unregisterEvent']);
 
+const user = ref({ id: 1 }); // Replace with actual user data from backend
 const events = ref<CalendarEvent[]>([]);
 const showForm = ref(false);
 
@@ -20,7 +20,7 @@ const newEvent = ref({
 
 const fetchEvents = async () => {
     try {
-        const res = await axios.get('/events');
+        const res = await axios.get('/events'); // Fetch all events created by the admin
         events.value = res.data
             .map((event: any) => {
                 const start = new Date(event.start);
@@ -113,6 +113,7 @@ const register = async (eventId: number) => {
     try {
         await axios.post(`/events/${eventId}/register`);
         await fetchEvents();
+        emit('registerEvent');
     } catch (error) {
         console.error('Registration failed:', error);
     }
@@ -122,6 +123,7 @@ const unregister = async (eventId: number) => {
     try {
         await axios.delete(`/events/${eventId}/register`);
         await fetchEvents();
+        emit('unregisterEvent');
     } catch (error) {
         console.error('Unregistration failed:', error);
     }
@@ -136,30 +138,18 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 
 <template>
     <div class="calendar-container">
-        <button @click="showForm = !showForm" class="add-btn">
-            {{ showForm ? 'Cancel' : 'Add Event' }}
-        </button>
-
         <div v-if="showForm" class="event-form">
             <input v-model="newEvent.title" type="text" placeholder="Title" required />
             <input v-model="newEvent.date" type="date" required />
-
             <textarea v-model="newEvent.description" placeholder="Description" class="description-input"></textarea>
-
             <select v-model="newEvent.startTime" required>
                 <option disabled value="">Start Time</option>
-                <option v-for="time in timeOptions" :key="time" :value="time">
-                    {{ time }}
-                </option>
+                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
             </select>
-
             <select v-model="newEvent.endTime" required>
                 <option disabled value="">End Time</option>
-                <option v-for="time in timeOptions" :key="time" :value="time">
-                    {{ time }}
-                </option>
+                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
             </select>
-
             <button @click="handleAddEvent" class="submit-btn">Save</button>
         </div>
 
@@ -178,14 +168,11 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
         >
             <template #event="props">
                 <div>
-                    <strong>{{ props.event.title }}</strong
-                    ><br />
+                    <strong>{{ props.event.title }}</strong><br />
                     <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd"> {{ props.event.description }} </span><br />
-
                     <button v-if="isRegistered(props.event)" @click="unregister(props.event.id)" class="submit-btn bg-red-500 hover:bg-red-600">
                         Unregister
                     </button>
-
                     <button v-else @click="register(props.event.id)" class="submit-btn">Register</button>
                 </div>
             </template>

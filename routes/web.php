@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventRegistrationController;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -31,6 +32,9 @@ Route::put('/events/{event}', [EventController::class, 'update']);
 Route::delete('/events/{event}', [EventController::class, 'destroy']);
 
 // Protected routes
+Route::middleware('auth')->get('/user', function (Request $request) {
+    return response()->json($request->user());
+});
 Route::middleware('auth')->group(function () {
 
     // Admin routes

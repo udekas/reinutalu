@@ -1,17 +1,36 @@
 <script setup lang="ts">
-defineProps<{
-    users: Array<{ id: number; name: string; email: string }>;
+import { ref, onMounted, watch } from 'vue';
+import axios from 'axios';
+
+const props = defineProps<{
+  userId: number
 }>();
+
+const registeredEvents = ref<any[]>([]);
+
+const fetchRegisteredEvents = async () => {
+  try {
+    const res = await axios.get(`/users/${props.userId}/events/registered`);
+    registeredEvents.value = res.data;
+  } catch (error) {
+    console.error('Error fetching registered events:', error);
+  }
+};
+
+onMounted(fetchRegisteredEvents);
+
+// Allow parent to trigger refresh manually if needed
+defineExpose({ fetchRegisteredEvents });
 </script>
 
 <template>
-    <div v-if="users.length" class="mt-2 text-sm text-gray-700">
-        <h4 class="font-semibold mb-1">Registered Users:</h4>
-        <ul class="list-disc pl-5">
-            <li v-for="user in users" :key="user.id">
-                {{ user.name }} <span class="text-gray-500 text-xs">({{ user.email }})</span>
-            </li>
-        </ul>
-    </div>
-    <p v-else class="text-sm text-gray-500">No users registered.</p>
+  <div class="mt-6">
+    <h3 class="text-xl font-semibold mb-2">Minu trennid</h3>
+    <ul v-if="registeredEvents.length" class="list-disc pl-5 space-y-1">
+      <li v-for="event in registeredEvents" :key="event.id">
+        {{ event.title }} – {{ new Date(event.start).toLocaleDateString() }}
+      </li>
+    </ul>
+    <p v-else class="text-gray-500">No registered events.</p>
+  </div>
 </template>
