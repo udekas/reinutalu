@@ -19,20 +19,25 @@ const emit = defineEmits<{
 
 const users = ref<any[]>([]);
 const loading = ref(true);
+const isEditing = ref(false);
 
-// Watch for changes in the event prop to fetch users when the event is selected
+// Editable form fields
+const editForm = ref({
+  title: '',
+  description: '',
+  start: '',
+  end: ''
+});
+
 watch(() => props.event.id, (newId) => {
   if (newId) {
     fetchUsers();
+    resetEditForm();
   }
 });
 
-// Fetch the registered users for the event
 const fetchUsers = async () => {
-  if (!props.event.id) {
-    console.error('Event ID is missing:', props.event);
-    return;
-  }
+  if (!props.event.id) return;
 
   loading.value = true;
   try {
@@ -45,12 +50,10 @@ const fetchUsers = async () => {
   }
 };
 
-// Close the popup
 const closePopup = () => {
   emit('close');
 };
 
-// Unregister a user from the event
 const unregisterUser = async (userId: number) => {
   try {
     await axios.delete(`/events/${props.event.id}/users/${userId}`);
@@ -60,10 +63,33 @@ const unregisterUser = async (userId: number) => {
   }
 };
 
-// Initial fetch on mount if the event ID is already set
+const resetEditForm = () => {
+  editForm.value = {
+    title: props.event.title,
+    description: props.event.description || '',
+    start: props.event.start,
+    end: props.event.end,
+  };
+};
+
+const saveChanges = async () => {
+  try {
+    const res = await axios.put(`/events/${props.event.id}`, editForm.value);
+    // Update parent prop (if needed via emit or state sync)
+    props.event.title = res.data.title;
+    props.event.description = res.data.description;
+    props.event.start = res.data.start;
+    props.event.end = res.data.end;
+    isEditing.value = false;
+  } catch (error) {
+    console.error('Failed to update event:', error);
+  }
+};
+
 onMounted(() => {
   if (props.event.id) {
     fetchUsers();
+    resetEditForm();
   }
 });
 </script>
@@ -72,24 +98,47 @@ onMounted(() => {
   <div v-if="visible" class="popup-overlay">
     <div class="popup-content">
       <div class="popup-header">
-        <h3>Registered Users for "{{ props.event.title }}"</h3>
+        <h3 v-if="!isEditing">Registered Users for "{{ props.event.title }}"</h3>
+        <h3 v-else>Edit Event</h3>
         <button @click="closePopup" class="close-btn">×</button>
       </div>
 
       <div class="popup-body">
-        <div v-if="loading" class="loading-spinner">Loading...</div>
-        
-        <ul v-if="!loading && users.length" class="user-list">
-          <li v-for="user in users" :key="user.id" class="user-item">
-            <div class="user-info">
-              <strong>{{ user.name }}</strong>
-              <p>{{ user.email }}</p>
-            </div>
-            <button @click="unregisterUser(user.id)" class="unregister-btn">Unregister</button>
-          </li>
-        </ul>
+        <!-- Edit form -->
+        <div v-if="isEditing">
+          <label>Title:</label>
+          <input v-model="editForm.title" class="input" />
+          <label>Description:</label>
+          <textarea v-model="editForm.description" class="input" />
+          <label>Start:</label>
+          <input type="datetime-local" v-model="editForm.start" class="input" />
+          <label>End:</label>
+          <input type="datetime-local" v-model="editForm.end" class="input" />
+          <div class="btn-row">
+            <button @click="saveChanges" class="save-btn">Save</button>
+            <button @click="isEditing = false" class="cancel-btn">Cancel</button>
+          </div>
+        </div>
 
-        <p v-if="!loading && users.length === 0">No users registered for this event.</p>
+        <!-- Users List -->
+        <div v-else>
+          <div v-if="loading" class="loading-spinner">Loading...</div>
+          <ul v-if="!loading && users.length" class="user-list">
+            <li v-for="user in users" :key="user.id" class="user-item">
+              <div class="user-info">
+                <strong>{{ user.name }}</strong>
+                <p>{{ user.email }}</p>
+              </div>
+              <button @click="unregisterUser(user.id)" class="unregister-btn">Unregister</button>
+            </li>
+          </ul>
+          <p v-if="!loading && users.length === 0">No users registered for this event.</p>
+        </div>
+      </div>
+
+      <!-- Edit button -->
+      <div v-if="!isEditing" class="popup-footer">
+        <button @click="isEditing = true" class="edit-btn">Edit Event</button>
       </div>
     </div>
   </div>
@@ -108,43 +157,36 @@ onMounted(() => {
   align-items: center;
   z-index: 9999;
 }
-
 .popup-content {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  max-width: 400px;
+  max-width: 500px;
   width: 100%;
 }
-
 .popup-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 1.2rem;
 }
-
 .close-btn {
   background: none;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
 }
-
 .popup-body {
   margin-top: 10px;
 }
-
 .loading-spinner {
   text-align: center;
   color: #888;
 }
-
 .user-list {
   list-style-type: none;
   padding: 0;
 }
-
 .user-item {
   display: flex;
   justify-content: space-between;
@@ -152,11 +194,9 @@ onMounted(() => {
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
-
 .user-info {
   flex-grow: 1;
 }
-
 .unregister-btn {
   background-color: #f44336;
   color: white;
@@ -165,13 +205,30 @@ onMounted(() => {
   border-radius: 4px;
   cursor: pointer;
 }
-
 .unregister-btn:hover {
   background-color: #d32f2f;
 }
-
-p {
-  text-align: center;
-  color: #666;
+.edit-btn, .save-btn, .cancel-btn {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-top: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.cancel-btn {
+  background-color: #999;
+  margin-left: 10px;
+}
+.input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+.btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 </style>
