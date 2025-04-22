@@ -91,7 +91,7 @@ onMounted(fetchUserData);
         <!-- Calendar Section -->
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 text-2xl">
             <h2>Kalender</h2>
-            <UserCalendar />
+            <UserCalendar @registerEvent="fetchRegisteredEvents" />
         </div>
     </AppLayout>
 </template>
