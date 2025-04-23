@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Calendar from '@/components/Calendar.vue';
+import Calendar from '@/components/BaseCalendar.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';

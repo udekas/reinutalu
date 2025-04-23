@@ -3,29 +3,22 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { VueCal, type CalendarEvent } from 'vue-cal';
 import 'vue-cal/style';
-import Popup from './Popup.vue';
+import EventUsers from './EventUsers.vue';
 
 const events = ref<CalendarEvent[]>([]);
-const showForm = ref(false);
-const popupVisible = ref(false);
-const selectedEvent = ref<CalendarEvent | null>(null);
 
-const newEvent = ref({
-    title: '',
-    date: '',
-    startTime: '',
-    endTime: '',
-    description: '',
-});
+const showForm = ref(false);
 
 const fetchEvents = async () => {
     try {
         const res = await axios.get('/events');
+
         events.value = res.data
             .map((event: any) => {
                 const start = new Date(event.start);
                 const end = new Date(event.end);
 
+                // Avoid invalid date errors
                 if (isNaN(start.getTime()) || isNaN(end.getTime())) {
                     console.warn('Skipping invalid event:', event);
                     return null;
@@ -67,6 +60,7 @@ const handleAddEvent = async () => {
         await fetchEvents();
         showForm.value = false;
 
+        // Clear the form after save
         newEvent.value = {
             title: '',
             date: '',
@@ -107,25 +101,18 @@ const handleEventDelete = async (event: CalendarEvent) => {
     }
 };
 
-const handleEventClick = (props: { event: CalendarEvent }) => {
-    const event = props.event;
-    if (event && event.id) {
-        selectedEvent.value = event;
-        popupVisible.value = true;
-    } else {
-        console.error('Event is invalid:', event);
-    }
-};
-
-const closePopup = () => {
-    popupVisible.value = false;
-    selectedEvent.value = null;
-};
-
 const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     const hour = Math.floor(i / 2);
     const minute = i % 2 === 0 ? '00' : '30';
     return `${String(hour).padStart(2, '0')}:${minute}`;
+});
+
+const newEvent = ref({
+    title: '',
+    date: '',
+    startTime: '',
+    endTime: '',
+    description: '',
 });
 </script>
 
@@ -136,26 +123,32 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
         </button>
 
         <div v-if="showForm" class="event-form">
-            <input v-model="newEvent.title" type="text" placeholder="Title" required class="input-field" />
-            <input v-model="newEvent.date" type="date" required class="input-field" />
+            <input v-model="newEvent.title" type="text" placeholder="Title" required />
+            <input v-model="newEvent.date" type="date" required />
+
             <textarea v-model="newEvent.description" placeholder="Description" class="description-input"></textarea>
-            <div class="time-select">
-                <select v-model="newEvent.startTime" required class="time-field">
-                    <option disabled value="">Start Time</option>
-                    <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-                </select>
-                <select v-model="newEvent.endTime" required class="time-field">
-                    <option disabled value="">End Time</option>
-                    <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-                </select>
-            </div>
+
+            <select v-model="newEvent.startTime" required>
+                <option disabled value="">Start Time</option>
+                <option v-for="time in timeOptions" :key="time" :value="time">
+                    {{ time }}
+                </option>
+            </select>
+
+            <select v-model="newEvent.endTime" required>
+                <option disabled value="">End Time</option>
+                <option v-for="time in timeOptions" :key="time" :value="time">
+                    {{ time }}
+                </option>
+            </select>
+
             <button @click="handleAddEvent" class="submit-btn">Save</button>
         </div>
 
         <VueCal
             style="height: 700px"
             :events="events"
-            :editable-events="{ create: false, resize: false, drag: false, delete: true }"
+            :editable-events="{ create: false, resize: true, drag: true, delete: true }"
             @event-change="handleEventChange"
             @event-delete="handleEventDelete"
             view="week"
@@ -164,101 +157,80 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             :time-to="18 * 60"
             :time-step="30"
             :snap-to-interval="30"
-            @event-click="handleEventClick"
         >
             <template #event="props">
-                <div class="calendar-event">
-                    <strong class="event-title">{{ props.event.title }}</strong>
-                    <br />
-                    <span v-if="props.event.description" class="event-description">
+                <div>
+                    <strong>{{ props.event.title }}</strong
+                    ><br />
+                    <span v-if="props.event.description" style="font-size: 0.8rem; color: #666">
                         {{ props.event.description }}
                     </span>
                 </div>
+                <div>
+                    <strong>{{ props.event.title }}</strong
+                    ><br />
+                    <span v-if="props.event.description" style="font-size: 0.8rem; color: #666">
+                        {{ props.event.description }}
+                    </span>
+                    <EventUsers v-if="props.event.users" :users="props.event.users" />
+                </div>
             </template>
         </VueCal>
-
-        <Popup v-if="popupVisible" :event="selectedEvent" :visible="popupVisible" @close="closePopup" />
     </div>
 </template>
 
 <style scoped>
 .calendar-container {
     padding: 1rem;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
 }
 
 .add-btn {
-    background-color: #4f46e5; /* Match with Admin Dashboard header color */
+    background-color: #4f46e5;
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 0.5rem 1rem;
     margin-bottom: 1rem;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: bold;
-}
-
-.add-btn:hover {
-    background-color: #3b3bdb;
 }
 
 .event-form {
     display: flex;
-    flex-direction: column;
     gap: 1rem;
+    flex-wrap: wrap;
     margin-bottom: 1rem;
 }
 
-.input-field,
-.time-field,
-.description-input {
-    padding: 0.75rem;
+.event-form input {
+    padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 6px;
+}
+
+.event-form select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: white;
     font-size: 1rem;
-    width: 100%;
-}
-
-.description-input {
-    resize: vertical;
-    min-height: 80px;
-}
-
-.time-select {
-    display: flex;
-    gap: 1rem;
 }
 
 .submit-btn {
-    background-color: #10b981; /* Green for confirmation actions */
+    background-color: #10b981;
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 0.5rem 1rem;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: bold;
 }
 
-.submit-btn:hover {
-    background-color: #0ea774;
-}
-
-.calendar-event {
-    font-size: 1rem;
-    color: white; /* White text for event titles */
-}
-
-.event-title {
-    font-weight: bold;
-    color: white; /* White title for events */
-}
-
-.event-description {
-    font-size: 0.9rem;
-    color: #e0e0e0; /* Light gray for event descriptions */
+.description-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    min-height: 60px;
+    resize: vertical;
 }
 </style>

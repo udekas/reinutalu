@@ -21,7 +21,7 @@ const users = ref<any[]>([]);
 const loading = ref(true);
 const isEditing = ref(false);
 
-// Editable form fields
+// Editable form fields for event editing
 const editForm = ref({
   title: '',
   description: '',
@@ -55,11 +55,30 @@ const closePopup = () => {
 };
 
 const unregisterUser = async (userId: number) => {
+  if (!props.event.id) return;
+
+  const url = `/events/${props.event.id}/register`; // Corrected URL
+  console.log('Unregister URL:', url); // Log the URL for debugging
+
   try {
-    await axios.delete(`/events/${props.event.id}/users/${userId}`);
-    users.value = users.value.filter((user) => user.id !== userId);
+    const response = await axios.delete(url); // Perform DELETE request
+    if (response.status === 200) {
+      // Assuming the response indicates the user was unregistered
+      users.value = users.value.filter((user) => user.id !== userId);
+    } else {
+      console.error('Unregister failed with status:', response.status);
+    }
   } catch (error) {
     console.error('Unregister failed:', error);
+  }
+};
+
+const deleteEvent = async () => {
+  try {
+    await axios.delete(`/events/${props.event.id}`);
+    closePopup(); // Close popup after deletion
+  } catch (error) {
+    console.error('Failed to delete event:', error);
   }
 };
 
@@ -75,7 +94,7 @@ const resetEditForm = () => {
 const saveChanges = async () => {
   try {
     const res = await axios.put(`/events/${props.event.id}`, editForm.value);
-    // Update parent prop (if needed via emit or state sync)
+    // Update event in the parent
     props.event.title = res.data.title;
     props.event.description = res.data.description;
     props.event.start = res.data.start;
@@ -98,7 +117,7 @@ onMounted(() => {
   <div v-if="visible" class="popup-overlay">
     <div class="popup-content">
       <div class="popup-header">
-        <h3 v-if="!isEditing">Registered Users for "{{ props.event.title }}"</h3>
+        <h3 v-if="!isEditing">{{ props.event.title }}</h3>
         <h3 v-else>Edit Event</h3>
         <button @click="closePopup" class="close-btn">×</button>
       </div>
@@ -120,8 +139,11 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Users List -->
+        <!-- View Event Details -->
         <div v-else>
+          <p><strong>Description:</strong> {{ props.event.description }}</p>
+
+          <h4>Who are attending:</h4>
           <div v-if="loading" class="loading-spinner">Loading...</div>
           <ul v-if="!loading && users.length" class="user-list">
             <li v-for="user in users" :key="user.id" class="user-item">
@@ -136,9 +158,10 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Edit button -->
+      <!-- Footer with Edit and Delete Buttons -->
       <div v-if="!isEditing" class="popup-footer">
         <button @click="isEditing = true" class="edit-btn">Edit Event</button>
+        <button @click="deleteEvent" class="delete-btn">Delete Event</button>
       </div>
     </div>
   </div>
@@ -208,7 +231,7 @@ onMounted(() => {
 .unregister-btn:hover {
   background-color: #d32f2f;
 }
-.edit-btn, .save-btn, .cancel-btn {
+.edit-btn, .save-btn, .cancel-btn, .delete-btn {
   background-color: #1976d2;
   color: white;
   border: none;
@@ -219,6 +242,10 @@ onMounted(() => {
 }
 .cancel-btn {
   background-color: #999;
+  margin-left: 10px;
+}
+.delete-btn {
+  background-color: #f44336;
   margin-left: 10px;
 }
 .input {

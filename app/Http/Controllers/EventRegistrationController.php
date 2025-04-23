@@ -34,17 +34,18 @@ class EventRegistrationController extends Controller
 
     // Unregister the user from a specific event
     public function unregister(Request $request, $eventId)
-    {
-        $user = Auth::user();
+{
+    $event = Event::findOrFail($eventId); // Find the event
+    $user = $request->user(); // Get the authenticated user
 
-        // Find the event, or throw 404 if not found
-        $event = Event::findOrFail($eventId);
-
-        // Detach the event from the user
-        $user->events()->detach($eventId);
-
-        return response()->json(['message' => 'Unregistered from the event successfully']);
+    // Check if the user is registered for the event
+    if ($event->users()->where('user_id', $user->id)->exists()) {
+        $event->users()->detach($user->id); // Remove the user's registration
+        return response()->json(['message' => 'Successfully unregistered from the event'], 200);
     }
+
+    return response()->json(['message' => 'User is not registered for this event'], 404);
+}
 
     // Get the events the currently authenticated user is registered for
     public function myEvents(Request $request)
