@@ -57,13 +57,12 @@ const closePopup = () => {
 const unregisterUser = async (userId: number) => {
   if (!props.event.id) return;
 
-  const url = `/events/${props.event.id}/register`; // Corrected URL
-  console.log('Unregister URL:', url); // Log the URL for debugging
+  const url = `/events/${props.event.id}/users/${userId}/unregister`; // NEW URL
+  console.log('Unregister URL:', url);
 
   try {
-    const response = await axios.delete(url); // Perform DELETE request
+    const response = await axios.delete(url);
     if (response.status === 200) {
-      // Assuming the response indicates the user was unregistered
       users.value = users.value.filter((user) => user.id !== userId);
     } else {
       console.error('Unregister failed with status:', response.status);

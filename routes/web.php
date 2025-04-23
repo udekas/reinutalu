@@ -28,37 +28,44 @@ Route::get('users', [AdminUserController::class, 'index'])
     ->middleware(['auth', 'admin']) // Ensure only authenticated admins can access
     ->name('users');
 
-
-
+// Event routes
 Route::get('/events', [EventController::class, 'index']);
 Route::post('/events', [EventController::class, 'store']);
 Route::put('/events/{event}', [EventController::class, 'update']);
 Route::delete('/events/{event}', [EventController::class, 'destroy']);
 
 Route::get('/events/{event}/users', [EventController::class, 'getUsers']);
+
 // Protected routes
 Route::middleware('auth')->get('/user', function (Request $request) {
     return response()->json($request->user());
 });
-Route::middleware('auth')->group(function () {
 
-    // Admin routes
+Route::middleware('auth')->group(function () {
+    // Admin routes for managing events and users
     Route::prefix('admin')->middleware(\App\Http\Middleware\AdminMiddleware::class)->group(function () {
+        // Event management routes
         Route::get('events', [AdminEventController::class, 'index']);
         Route::post('events', [AdminEventController::class, 'store']);
         Route::put('events/{event}', [AdminEventController::class, 'update']);
         Route::delete('events/{event}', [AdminEventController::class, 'destroy']);
         Route::get('events/{event}', [AdminEventController::class, 'show']);
-
+        
+        // User management routes
+        Route::delete('/admin/users/{user}', [AdminUserController::class, 'destroy']);
         Route::get('users', [AdminUserController::class, 'index']);
+        
+        // User event management
+        Route::get('users/{user}/events', [AdminUserController::class, 'getUserEvents']);
+        Route::put('users/{user}/events', [AdminUserController::class, 'saveUserEvents']);
     });
     
-
-    // User event actions
+    // User event actions for registered users
     Route::get('/events', [EventController::class, 'index']);
     Route::get('/events/{event}', [EventController::class, 'show']);
     Route::post('events/{eventId}/register', [EventRegistrationController::class, 'register']);
     Route::delete('/events/{eventId}/register', [EventRegistrationController::class, 'unregister']);
+    Route::delete('/events/{eventId}/users/{userId}/unregister', [EventRegistrationController::class, 'adminUnregister']);
     
     Route::get('my-events', [EventRegistrationController::class, 'myEvents']);
 });

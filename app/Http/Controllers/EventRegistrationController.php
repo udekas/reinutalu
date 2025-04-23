@@ -58,4 +58,16 @@ class EventRegistrationController extends Controller
 
         return response()->json($events);
     }
+
+    public function adminUnregister($eventId, $userId)
+{
+    $event = Event::findOrFail($eventId);
+
+    if ($event->users()->where('user_id', $userId)->exists()) {
+        $event->users()->detach($userId);
+        return response()->json(['message' => 'User successfully unregistered from event']);
+    }
+
+    return response()->json(['message' => 'User was not registered for this event'], 404);
+}
 }
