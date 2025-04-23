@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { ref } from 'vue';
 import { type BreadcrumbItem } from '@/types';
+import axios from 'axios';
 
 interface Event {
   id: number;
@@ -14,28 +14,24 @@ interface User {
   id: number;
   name: string;
   email: string;
-  events: Event[];
+  events_count: number; // The count of registered events
 }
+
+// Declare the users prop passed by Inertia
+const props = defineProps({
+    users: {
+        type: Array as () => User[],
+        required: true,
+    },
+});
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Users', href: '/users' },
 ];
 
-const users = ref<User[]>([]);
-const loading = ref(true);
-
-const fetchUsers = async () => {
-  try {
-    const res = await axios.get('/admin/users');
-    users.value = res.data;
-  } catch (error) {
-    console.error('Error fetching users:', error);
-  } finally {
-    loading.value = false;
-  }
-};
-
-onMounted(fetchUsers);
+// You can now directly use the `props.users` instead of fetching it manually
+const users = ref(props.users);
+const loading = ref(false);
 
 // Edit modal logic
 const selectedUser = ref<User | null>(null);
@@ -51,7 +47,6 @@ const closeEditModal = () => {
   showEditModal.value = false;
 };
 
-// Submit changes (you’ll need backend support for this route)
 const saveUser = async () => {
   if (!selectedUser.value) return;
   try {
@@ -60,7 +55,8 @@ const saveUser = async () => {
       email: selectedUser.value.email,
     });
     showEditModal.value = false;
-    await fetchUsers(); // Refresh user list
+    // Optionally, you could refresh users if needed
+    users.value = await axios.get('/admin/users');
   } catch (error) {
     console.error('Error saving user:', error);
   }
@@ -89,11 +85,7 @@ const saveUser = async () => {
           <tr v-for="user in users" :key="user.id">
             <td class="border px-4 py-2">{{ user.name }}</td>
             <td class="border px-4 py-2">{{ user.email }}</td>
-            <td class="border px-4 py-2">
-              <ul class="list-disc list-inside text-sm">
-                <li v-for="event in user.events" :key="event.id">{{ event.title }}</li>
-              </ul>
-            </td>
+            <td class="border px-4 py-2">{{ user.events_count }}</td>
             <td class="border px-4 py-2">
               <button
                 @click="openEditModal(user)"

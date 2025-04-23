@@ -1,38 +1,32 @@
 <script setup lang="ts">
-import NavFooter from '@/components/NavFooter.vue';
+import { Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarContent, SidebarFooter } from '@/components/ui/sidebar';
+import AppLogo from '@/components/AppLogo.vue';
 import NavMain from '@/components/NavMain.vue';
+import NavFooter from '@/components/NavFooter.vue';
 import NavUser from '@/components/NavUser.vue';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
-import AppLogo from './AppLogo.vue';
+import { LayoutGrid } from 'lucide-vue-next';
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
-    {
-        title: 'Users',
-        href: '/users',
-        icon: LayoutGrid,
-    },
-];
+// Get the page data passed by Inertia
+const page = usePage();
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits',
-        icon: BookOpen,
-    },
-];
+// Make sure the user object is available before using it
+const user = page.props.auth?.user; // Use optional chaining to avoid errors if auth is undefined
+
+// Compute the navigation items based on the user's role
+const mainNavItems = computed(() => {
+    if (user?.is_admin) {
+        return [
+            { title: 'Dashboard', href: '/admin/dashboard', icon: LayoutGrid },
+            { title: 'Users', href: '/users', icon: LayoutGrid },
+        ];
+    }
+
+    return [
+        { title: 'Dashboard', href: '/dashboard', icon: LayoutGrid },
+    ];
+});
 </script>
 
 <template>
@@ -41,7 +35,7 @@ const footerNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="route('dashboard')">
+                        <Link :href="route(user?.is_admin ? 'admin.dashboard' : 'dashboard')">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>
@@ -50,13 +44,15 @@ const footerNavItems: NavItem[] = [
         </SidebarHeader>
 
         <SidebarContent>
+            <!-- Render the correct menu items based on is_admin -->
             <NavMain :items="mainNavItems" />
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter :items="footerNavItems" />
+            <NavFooter :items="[]" />
             <NavUser />
         </SidebarFooter>
     </Sidebar>
+
     <slot />
 </template>

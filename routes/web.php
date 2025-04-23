@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminEventController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,10 +23,10 @@ Route::get('admin/dashboard', function () {
     return Inertia::render('AdminDashboard'); // Admin dashboard
 })->middleware(['auth', 'admin'])->name('admin.dashboard');
 
-//Admin users route
-Route::get('users', function () {
-    return Inertia::render('AdminUsers'); // User management
-})->middleware(['auth', 'admin'])->name('users');
+// Admin users route
+Route::get('users', [AdminUserController::class, 'index'])
+    ->middleware(['auth', 'admin']) // Ensure only authenticated admins can access
+    ->name('users');
 
 
 
@@ -49,7 +50,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('events/{event}', [AdminEventController::class, 'destroy']);
         Route::get('events/{event}', [AdminEventController::class, 'show']);
 
+        Route::get('users', [AdminUserController::class, 'index']);
     });
+    
 
     // User event actions
     Route::get('/events', [EventController::class, 'index']);
