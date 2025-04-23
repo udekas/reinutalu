@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { onMounted, ref, defineEmits } from 'vue';
+import { defineEmits, onMounted, ref } from 'vue';
 import { VueCal, type CalendarEvent } from 'vue-cal';
 import 'vue-cal/style';
 
@@ -168,12 +168,19 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
         >
             <template #event="props">
                 <div>
-                    <strong>{{ props.event.title }}</strong><br />
-                    <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd"> {{ props.event.description }} </span><br />
+                    <strong>{{ props.event.title }}</strong
+                    ><br />
+                    <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd">
+                        {{ props.event.description }} </span
+                    ><br />
+
                     <button v-if="isRegistered(props.event)" @click="unregister(props.event.id)" class="submit-btn bg-red-500 hover:bg-red-600">
                         Unregister
                     </button>
-                    <button v-else @click="register(props.event.id)" class="submit-btn">Register</button>
+
+                    <button v-else @click="register(props.event.id)" class="submit-btn" :disabled="new Date(props.event.start) < new Date()">
+                        Register
+                    </button>
                 </div>
             </template>
         </VueCal>

@@ -22,9 +22,12 @@ Route::get('admin/dashboard', function () {
     return Inertia::render('AdminDashboard'); // Admin dashboard
 })->middleware(['auth', 'admin'])->name('admin.dashboard');
 
-Route::get('/test', function () {
-    return response()->json(['message' => 'API is working!']);
-});
+//Admin users route
+Route::get('users', function () {
+    return Inertia::render('AdminUsers'); // User management
+})->middleware(['auth', 'admin'])->name('users');
+
+
 
 Route::get('/events', [EventController::class, 'index']);
 Route::post('/events', [EventController::class, 'store']);
