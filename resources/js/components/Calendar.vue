@@ -10,16 +10,6 @@ const user = ref({ id: 1 }); // Replace with actual user data from backend
 const events = ref<CalendarEvent[]>([]);
 const showForm = ref(false);
 
-import { defineEmits, onMounted, ref } from 'vue';
-import { VueCal, type CalendarEvent } from 'vue-cal';
-import 'vue-cal/style';
-
-const emit = defineEmits(['registerEvent', 'unregisterEvent']);
-
-const user = ref({ id: 1 }); // Replace with actual user data from backend
-const events = ref<CalendarEvent[]>([]);
-const showForm = ref(false);
-
 const newEvent = ref({
     title: '',
     date: '',
@@ -45,29 +35,12 @@ const fetchEvents = async () => {
                     end,
                 };
             })
-            .filter((e) => e !== null);
-        const res = await axios.get('/events'); // Fetch all events created by the admin
-        events.value = res.data
-            .map((event: any) => {
-                const start = new Date(event.start);
-                const end = new Date(event.end);
-                if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-                    console.warn('Skipping invalid event:', event);
-                    return null;
-                }
-                return {
-                    ...event,
-                    start,
-                    end,
-                };
-            })
-            .filter((e) => e !== null);
+            .filter((e:any) => e !== null);
     } catch (error) {
         console.error('Error loading events:', error);
     }
 };
 
-onMounted(fetchEvents);
 onMounted(fetchEvents);
 
 const handleAddEvent = async () => {
@@ -106,14 +79,13 @@ const handleAddEvent = async () => {
 };
 
 const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
-const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
     try {
         const res = await axios.put(`/events/${event.id}`, {
             title: event.title,
             start: new Date(event.start).toISOString(),
             end: new Date(event.end).toISOString(),
         });
-        const index = events.value.findIndex((e) => e.id === event.id);
+        const index = events.value.findIndex((e:any) => e.id === event.id);
         if (index !== -1) events.value[index] = res.data;
     } catch (error) {
         console.error('Update failed:', error);
@@ -133,7 +105,7 @@ const handleEventDelete = async (event: CalendarEvent) => {
 
     try {
         await axios.delete(`/events/${event.id}`);
-        events.value = events.value.filter((e) => e.id !== event.id);
+        events.value = events.value.filter((e:any) => e.id !== event.id);
     } catch (error) {
         console.error('Delete failed:', error);
     }
@@ -162,21 +134,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             </select>
             <button @click="handleAddEvent" class="submit-btn">Save</button>
         </div>
-    <div class="calendar-container">
-        <div v-if="showForm" class="event-form">
-            <input v-model="newEvent.title" type="text" placeholder="Title" required />
-            <input v-model="newEvent.date" type="date" required />
-            <textarea v-model="newEvent.description" placeholder="Description" class="description-input"></textarea>
-            <select v-model="newEvent.startTime" required>
-                <option disabled value="">Start Time</option>
-                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-            </select>
-            <select v-model="newEvent.endTime" required>
-                <option disabled value="">End Time</option>
-                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-            </select>
-            <button @click="handleAddEvent" class="submit-btn">Save</button>
-        </div>
+    
 
         <VueCal
             style="height: 700px"
