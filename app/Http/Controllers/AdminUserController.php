@@ -28,6 +28,8 @@ class AdminUserController extends Controller
         // Get all events for the modal dropdowns
         $events = Event::select('id', 'title')->orderBy('date')->get();
 
+        // dd($users->items());
+
         return Inertia::render('AdminUsers', [
             'users' => $users->items(),
             'events' => $events,
@@ -38,11 +40,12 @@ class AdminUserController extends Controller
 
     public function getUserEvents(User $user)
     {
-        $events = $user->events()->select('id', 'title')->get();
+        // $events = $user->events()->select('id', 'title')->get();
 
-        return response()->json([
-            'events' => $events,
-        ]);
+        // return response()->json([
+        //     'events' => $events,
+        // ]);
+        return "asd";
     }
 
     public function saveUserEvents(Request $request, User $user)
