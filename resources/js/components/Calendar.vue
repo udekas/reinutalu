@@ -129,17 +129,19 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
         </div>
 
         <VueCal
-            style="height:300px; width:300px"
-            :events="events"
+            style="height: 400px; width: 400px"
             :editable-events="{ create: false, resize: false, drag: false, delete: false }"
             @event-change="handleEventChange"
             @event-delete="handleEventDelete"
+            :events="events"
+            events-on-month-view
+            :views="{ days: { cols: 5, rows: 1 }, month: {} }"
             view="month"
-            :views="['month', 'week', 'day']"
             :time-from="7 * 60"
             :time-to="21 * 60"
             :time-step="15"
             :snap-to-interval="15"
+            :views-bar="false"
         >
             <template #event="props">
                 <div>
@@ -154,6 +156,26 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 
 <style scoped>
 /* Your scoped styles here */
+
+.vuecal {
+  height: 441px;
+
+  .vuecal__scrollable--month-view {
+    .vuecal__cell {height: 50px;}
+    .vuecal__event {height: 15px;margin-top: 1px;}
+    .vuecal__event-details {
+      font-size: 11px;
+      white-space: nowrap;
+      padding: 0;
+    }
+    .vuecal__cell--has-events {
+      flex-direction: row-reverse;
+      overflow: hidden;
+      justify-content: flex-start;
+    }
+  }
+  .vuecal__cell--has-events {background-color: #00dbff1c;}
+}
 .calendar-container {
     padding: 1rem;
     font-family: Arial, sans-serif;
@@ -206,5 +228,20 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     border-radius: 6px;
     min-height: 60px;
     resize: vertical;
+}
+.vuecal {
+    --vuecal-primary-color: #a14619;
+    --vuecal-secondary-color: #2e2e2e;
+    --vuecal-base-color: #ffffff;
+    --vuecal-contrast-color: #000000;
+    --vuecal-border-color: color-mix(in srgb, var(--vuecal-base-color) 8%, transparent);
+    --vuecal-header-color: var(--vuecal-base-color);
+    --vuecal-event-color: red;
+    --vuecal-event-border-color: currentColor;
+    --vuecal-border-radius: 6 px;
+    --vuecal-height: 500 px;
+    --vuecal-min-schedule-width: 0 px;
+    --vuecal-min-cell-width: 0 px;
+    --vuecal-transition-duration: 0.25 s;
 }
 </style>

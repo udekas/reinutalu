@@ -42,15 +42,19 @@ import Calendar from '@/components/Calendar.vue';
         <!-- Hero Section -->
         <section class="flex h-screen items-center justify-center bg-cover bg-center text-center text-white">
             <div
-                class="container mx-auto flex h-full flex-col items-center justify-top bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center"
+                class="justify-top container mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center"
             >
-                <h1 class=" mx-auto mt-24 text-4xl font-bold md:text-5xl lg:text-6xl text-yellow-950">Koge vabadust hobuse seljas</h1>
-                <p class="mx-auto my-12 max-w-2xl text-xl md:text-2xl text-yellow-950">
+                <h1 class="mx-auto mt-24 text-4xl font-bold text-yellow-950 md:text-5xl lg:text-6xl">Koge vabadust hobuse seljas</h1>
+                <p class="mx-auto my-12 max-w-2xl text-xl text-yellow-950 md:text-2xl">
                     Avastage maalilisi radu või õppige ratsutama meie kogenud treenerite juhendamisel
                 </p>
-                <a href="#broneeri" class="my-20 bg-primary inline-block rounded-md px-8 py-3 text-white transition hover:bg-[#6d4a2a8d]">Broneeri sõit</a>
+                <a href="#broneeri" class="bg-primary my-20 inline-block rounded-md px-8 py-3 text-white transition hover:bg-[#6d4a2a8d]"
+                    >Broneeri sõit</a
+                >
             </div>
-            <Calendar />
+            <div class="">
+                <Calendar />
+            </div>
         </section>
 
         <!-- Booking Section -->
