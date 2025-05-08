@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import Calendar from './ui/calendar/Calendar.vue'; // Assuming you're using ShadCN Vue Calendar
-import Popup from './Popup.vue'; // Assuming Popup is still required for event details
-import { CalendarEvent } from './types'; // Define your event type here (adjust path as necessary)
+import { defineEmits, onMounted, ref } from 'vue';
+import { VueCal, type CalendarEvent } from 'vue-cal';
+import 'vue-cal/style';
 
-// Variables for events and form state
-const events = ref<CalendarEvent[]>([]); // Events for the calendar
-const showForm = ref(false); // Control the visibility of the event creation form
-const popupVisible = ref(false); // Popup visibility for event details
-const selectedEvent = ref<CalendarEvent | null>(null); // Store selected event for popup
+const emit = defineEmits(['registerEvent', 'unregisterEvent']);
 
-// New event object
+const user = ref({ id: 1 }); // Replace with actual user data from backend
+const events = ref<CalendarEvent[]>([]);
+const showForm = ref(false);
+
 const newEvent = ref({
     title: '',
     date: '',
@@ -20,28 +18,31 @@ const newEvent = ref({
     description: '',
 });
 
-// Fetch events from API
 const fetchEvents = async () => {
     try {
-        const res = await axios.get('/events'); // Fetch events from backend
-        events.value = res.data.map((event: any) => {
-            const start = new Date(event.start);
-            const end = new Date(event.end);
-
-            return {
-                ...event,
-                start,
-                end,
-            };
-        });
+        const res = await axios.get('/events'); // Fetch all events created by the admin
+        events.value = res.data
+            .map((event: any) => {
+                const start = new Date(event.start);
+                const end = new Date(event.end);
+                if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                    console.warn('Skipping invalid event:', event);
+                    return null;
+                }
+                return {
+                    ...event,
+                    start,
+                    end,
+                };
+            })
+            .filter((e) => e !== null);
     } catch (error) {
         console.error('Error loading events:', error);
     }
 };
 
-onMounted(fetchEvents); // Fetch events when the component is mounted
+onMounted(fetchEvents);
 
-// Handle adding new event
 const handleAddEvent = async () => {
     const { title, date, startTime, endTime, description } = newEvent.value;
     if (!title || !date || !startTime || !endTime) {
@@ -59,10 +60,10 @@ const handleAddEvent = async () => {
             start: start.toISOString(),
             end: end.toISOString(),
         });
-        fetchEvents(); // Reload events after adding
+
+        await fetchEvents();
         showForm.value = false;
 
-        // Reset the form
         newEvent.value = {
             title: '',
             date: '',
@@ -75,27 +76,13 @@ const handleAddEvent = async () => {
     }
 };
 
-// Handle event click to show details in a popup
-const handleEventClick = (event: CalendarEvent) => {
-    selectedEvent.value = event; // Set the selected event
-    popupVisible.value = true; // Show the popup
-};
-
-// Handle closing the popup
-const closePopup = () => {
-    popupVisible.value = false; // Hide the popup
-    selectedEvent.value = null; // Reset the selected event
-};
-
-// Handle event update
-const handleEventUpdate = async (event: CalendarEvent) => {
+const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
     try {
         const res = await axios.put(`/events/${event.id}`, {
             title: event.title,
             start: new Date(event.start).toISOString(),
             end: new Date(event.end).toISOString(),
         });
-        // Update the local event list with the updated data
         const index = events.value.findIndex((e) => e.id === event.id);
         if (index !== -1) events.value[index] = res.data;
     } catch (error) {
@@ -103,8 +90,12 @@ const handleEventUpdate = async (event: CalendarEvent) => {
     }
 };
 
-// Handle event delete
 const handleEventDelete = async (event: CalendarEvent) => {
+    if (!event || !event.id) {
+        console.error('Event object or event.id is missing:', event);
+        return;
+    }
+
     try {
         await axios.delete(`/events/${event.id}`);
         events.value = events.value.filter((e) => e.id !== event.id);
@@ -113,7 +104,6 @@ const handleEventDelete = async (event: CalendarEvent) => {
     }
 };
 
-// Time options for event start and end times
 const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     const hour = Math.floor(i / 2);
     const minute = i % 2 === 0 ? '00' : '30';
@@ -122,105 +112,99 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 </script>
 
 <template>
-  <div class="calendar-container">
-    <!-- Button to toggle event form -->
-    <button @click="showForm = !showForm" class="add-btn">
-      {{ showForm ? 'Cancel' : 'Add Event' }}
-    </button>
-
-    <!-- Event creation form -->
-    <div v-if="showForm" class="event-form">
-      <input v-model="newEvent.title" type="text" placeholder="Title" required />
-      <input v-model="newEvent.date" type="date" required />
-      <textarea v-model="newEvent.description" placeholder="Description" class="description-input"></textarea>
-      <select v-model="newEvent.startTime" required>
-        <option disabled value="">Start Time</option>
-        <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-      </select>
-      <select v-model="newEvent.endTime" required>
-        <option disabled value="">End Time</option>
-        <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-      </select>
-      <button @click="handleAddEvent" class="submit-btn">Save</button>
-    </div>
-
-    <!-- ShadCN Calendar (Month, Week, and Day views) -->
-    <Calendar
-      :events="events"
-      :views="['month', 'week', 'day']"
-      view="week" 
-      :time-from="7 * 60"
-      :time-to="18 * 60"
-      :time-step="30"
-      :snap-to-interval="30"
-      @event-click="handleEventClick"
-      @event-change="handleEventUpdate"
-      @event-delete="handleEventDelete"
-    >
-      <template #event="props">
-        <div>
-          <strong>{{ props.event.title }}</strong>
-          <br />
-          <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd">{{ props.event.description }}</span>
+    <div class="calendar-container">
+        <div v-if="showForm" class="event-form">
+            <input v-model="newEvent.title" type="text" placeholder="Title" required />
+            <input v-model="newEvent.date" type="date" required />
+            <textarea v-model="newEvent.description" placeholder="Description" class="description-input"></textarea>
+            <select v-model="newEvent.startTime" required>
+                <option disabled value="">Start Time</option>
+                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
+            </select>
+            <select v-model="newEvent.endTime" required>
+                <option disabled value="">End Time</option>
+                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
+            </select>
+            <button @click="handleAddEvent" class="submit-btn">Save</button>
         </div>
-      </template>
-    </Calendar>
 
-    <!-- Popup for showing event details -->
-    <Popup v-if="popupVisible" :event="selectedEvent" :visible="popupVisible" @close="closePopup" />
-  </div>
+        <VueCal
+            style="height:300px; width:300px"
+            :events="events"
+            :editable-events="{ create: false, resize: false, drag: false, delete: false }"
+            @event-change="handleEventChange"
+            @event-delete="handleEventDelete"
+            view="month"
+            :views="['month', 'week', 'day']"
+            :time-from="7 * 60"
+            :time-to="21 * 60"
+            :time-step="15"
+            :snap-to-interval="15"
+        >
+            <template #event="props">
+                <div>
+                    <strong>{{ props.event.title }}</strong
+                    ><br />
+                    <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd"> {{ props.event.description }} </span><br />
+                </div>
+            </template>
+        </VueCal>
+    </div>
 </template>
 
 <style scoped>
-/* Style your calendar container */
+/* Your scoped styles here */
 .calendar-container {
-  padding: 1rem;
-  font-family: Arial, sans-serif;
-  width: 100%;
-  height: 80vh; /* Adjust calendar height */
+    padding: 1rem;
+    font-family: Arial, sans-serif;
 }
 
-/* Add button and styling for form */
 .add-btn {
-  background-color: #4f46e5;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
+    background-color: #6d4a2a;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
-/* Event form styling */
 .event-form {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
 }
 
-.event-form input,
+.event-form input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
 .event-form select {
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 1rem;
 }
 
 .submit-btn {
-  background-color: #10b981;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .description-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  min-height: 60px;
-  resize: vertical;
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    min-height: 60px;
+    resize: vertical;
 }
 </style>
