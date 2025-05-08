@@ -10,6 +10,16 @@ const user = ref({ id: 1 }); // Replace with actual user data from backend
 const events = ref<CalendarEvent[]>([]);
 const showForm = ref(false);
 
+import { defineEmits, onMounted, ref } from 'vue';
+import { VueCal, type CalendarEvent } from 'vue-cal';
+import 'vue-cal/style';
+
+const emit = defineEmits(['registerEvent', 'unregisterEvent']);
+
+const user = ref({ id: 1 }); // Replace with actual user data from backend
+const events = ref<CalendarEvent[]>([]);
+const showForm = ref(false);
+
 const newEvent = ref({
     title: '',
     date: '',
@@ -36,11 +46,28 @@ const fetchEvents = async () => {
                 };
             })
             .filter((e) => e !== null);
+        const res = await axios.get('/events'); // Fetch all events created by the admin
+        events.value = res.data
+            .map((event: any) => {
+                const start = new Date(event.start);
+                const end = new Date(event.end);
+                if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                    console.warn('Skipping invalid event:', event);
+                    return null;
+                }
+                return {
+                    ...event,
+                    start,
+                    end,
+                };
+            })
+            .filter((e) => e !== null);
     } catch (error) {
         console.error('Error loading events:', error);
     }
 };
 
+onMounted(fetchEvents);
 onMounted(fetchEvents);
 
 const handleAddEvent = async () => {
@@ -62,6 +89,8 @@ const handleAddEvent = async () => {
         });
 
         await fetchEvents();
+
+        await fetchEvents();
         showForm.value = false;
 
         newEvent.value = {
@@ -77,6 +106,7 @@ const handleAddEvent = async () => {
 };
 
 const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
+const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
     try {
         const res = await axios.put(`/events/${event.id}`, {
             title: event.title,
@@ -91,6 +121,11 @@ const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
 };
 
 const handleEventDelete = async (event: CalendarEvent) => {
+    if (!event || !event.id) {
+        console.error('Event object or event.id is missing:', event);
+        return;
+    }
+
     if (!event || !event.id) {
         console.error('Event object or event.id is missing:', event);
         return;
@@ -127,21 +162,34 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             </select>
             <button @click="handleAddEvent" class="submit-btn">Save</button>
         </div>
+    <div class="calendar-container">
+        <div v-if="showForm" class="event-form">
+            <input v-model="newEvent.title" type="text" placeholder="Title" required />
+            <input v-model="newEvent.date" type="date" required />
+            <textarea v-model="newEvent.description" placeholder="Description" class="description-input"></textarea>
+            <select v-model="newEvent.startTime" required>
+                <option disabled value="">Start Time</option>
+                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
+            </select>
+            <select v-model="newEvent.endTime" required>
+                <option disabled value="">End Time</option>
+                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
+            </select>
+            <button @click="handleAddEvent" class="submit-btn">Save</button>
+        </div>
 
         <VueCal
-            style="height: 400px; width: 400px"
+            style="height: 700px"
+            :events="events"
             :editable-events="{ create: false, resize: false, drag: false, delete: false }"
             @event-change="handleEventChange"
             @event-delete="handleEventDelete"
-            :events="events"
-            events-on-month-view
-            :views="{ days: { cols: 5, rows: 1 }, month: {} }"
-            view="month"
+            view="week"
+            :views="['month', 'week', 'day']"
             :time-from="7 * 60"
-            :time-to="21 * 60"
-            :time-step="15"
-            :snap-to-interval="15"
-            :views-bar="false"
+            :time-to="18 * 60"
+            :time-step="30"
+            :snap-to-interval="30"
         >
             <template #event="props">
                 <div>
@@ -156,33 +204,15 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 
 <style scoped>
 /* Your scoped styles here */
-
-.vuecal {
-  height: 441px;
-
-  .vuecal__scrollable--month-view {
-    .vuecal__cell {height: 50px;}
-    .vuecal__event {height: 15px;margin-top: 1px;}
-    .vuecal__event-details {
-      font-size: 11px;
-      white-space: nowrap;
-      padding: 0;
-    }
-    .vuecal__cell--has-events {
-      flex-direction: row-reverse;
-      overflow: hidden;
-      justify-content: flex-start;
-    }
-  }
-  .vuecal__cell--has-events {background-color: #00dbff1c;}
-}
 .calendar-container {
+    padding: 1rem;
+    font-family: Arial, sans-serif;
     padding: 1rem;
     font-family: Arial, sans-serif;
 }
 
 .add-btn {
-    background-color: #6d4a2a;
+    background-color: #4f46e5;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -196,6 +226,16 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     gap: 1rem;
     flex-wrap: wrap;
     margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.event-form input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
 }
 
 .event-form input {
@@ -210,6 +250,11 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     border-radius: 6px;
     background-color: white;
     font-size: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 1rem;
 }
 
 .submit-btn {
@@ -219,9 +264,21 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     padding: 0.5rem 1rem;
     border-radius: 8px;
     cursor: pointer;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .description-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    min-height: 60px;
+    resize: vertical;
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #ddd;
