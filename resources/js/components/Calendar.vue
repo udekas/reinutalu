@@ -10,15 +10,6 @@ const user = ref({ id: 1 }); // Replace with actual user data from backend
 const events = ref<CalendarEvent[]>([]);
 const showForm = ref(false);
 
-import { defineEmits, onMounted, ref } from 'vue';
-import { VueCal, type CalendarEvent } from 'vue-cal';
-import 'vue-cal/style';
-
-const emit = defineEmits(['registerEvent', 'unregisterEvent']);
-
-const user = ref({ id: 1 }); // Replace with actual user data from backend
-const events = ref<CalendarEvent[]>([]);
-const showForm = ref(false);
 
 const newEvent = ref({
     title: '',
@@ -68,7 +59,7 @@ const fetchEvents = async () => {
 };
 
 onMounted(fetchEvents);
-onMounted(fetchEvents);
+
 
 const handleAddEvent = async () => {
     const { title, date, startTime, endTime, description } = newEvent.value;
@@ -105,7 +96,7 @@ const handleAddEvent = async () => {
     }
 };
 
-const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
+
 const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
     try {
         const res = await axios.put(`/events/${event.id}`, {
@@ -147,21 +138,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 </script>
 
 <template>
-    <div class="calendar-container">
-        <div v-if="showForm" class="event-form">
-            <input v-model="newEvent.title" type="text" placeholder="Title" required />
-            <input v-model="newEvent.date" type="date" required />
-            <textarea v-model="newEvent.description" placeholder="Description" class="description-input"></textarea>
-            <select v-model="newEvent.startTime" required>
-                <option disabled value="">Start Time</option>
-                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-            </select>
-            <select v-model="newEvent.endTime" required>
-                <option disabled value="">End Time</option>
-                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-            </select>
-            <button @click="handleAddEvent" class="submit-btn">Save</button>
-        </div>
+   
     <div class="calendar-container">
         <div v-if="showForm" class="event-form">
             <input v-model="newEvent.title" type="text" placeholder="Title" required />
@@ -184,7 +161,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             :editable-events="{ create: false, resize: false, drag: false, delete: false }"
             @event-change="handleEventChange"
             @event-delete="handleEventDelete"
-            view="week"
+            view="month"
             :views="['month', 'week', 'day']"
             :time-from="7 * 60"
             :time-to="18 * 60"
