@@ -69,7 +69,7 @@
     <section 
       class="h-screen flex items-center justify-center text-center text-white bg-cover bg-center"
       :class="{'pt-32': showAuthNav, 'pt-20': !showAuthNav}"
-    :style="{'background-image': 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('./resources/js/pages/assets/DSC_1078.JPG')}">
+    :style="{'background-image': 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('.resources/js/pages/assets/DSC_1078.JPG')}">
       <div class="container mx-auto px-4">
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Koge vabadust hobuse seljas</h1>
         <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Avastage maalilisi radu või õppige ratsutama meie kogenud treenerite juhendamisel</p>
