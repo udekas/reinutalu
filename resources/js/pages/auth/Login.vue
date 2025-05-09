@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import InputError from '@/components/InputError.vue';
+import MasterFooter from '@/components/MasterFooter.vue';
+import Navigation from '@/components/Navigation.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -28,6 +30,8 @@ const submit = () => {
 </script>
 
 <template>
+    <Navigation></Navigation>
+
     <AuthBase title="Log in to your account" description="Enter your email and password below to log in">
         <Head title="Log in" />
 
@@ -84,10 +88,12 @@ const submit = () => {
                 </Button>
             </div>
 
-            <div class="text-center text-sm text-muted-foreground">
+            <div class="text-muted-foreground text-center text-sm">
                 Don't have an account?
                 <TextLink :href="route('register')" :tabindex="5">Sign up</TextLink>
             </div>
         </form>
     </AuthBase>
+
+    <MasterFooter></MasterFooter>
 </template>

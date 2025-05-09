@@ -10,7 +10,6 @@ const user = ref({ id: 1 }); // Replace with actual user data from backend
 const events = ref<CalendarEvent[]>([]);
 const showForm = ref(false);
 
-
 const newEvent = ref({
     title: '',
     date: '',
@@ -37,29 +36,12 @@ const fetchEvents = async () => {
                 };
             })
             .filter((e) => e !== null);
-        const res = await axios.get('/events'); // Fetch all events created by the admin
-        events.value = res.data
-            .map((event: any) => {
-                const start = new Date(event.start);
-                const end = new Date(event.end);
-                if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-                    console.warn('Skipping invalid event:', event);
-                    return null;
-                }
-                return {
-                    ...event,
-                    start,
-                    end,
-                };
-            })
-            .filter((e) => e !== null);
     } catch (error) {
         console.error('Error loading events:', error);
     }
 };
 
 onMounted(fetchEvents);
-
 
 const handleAddEvent = async () => {
     const { title, date, startTime, endTime, description } = newEvent.value;
@@ -95,7 +77,6 @@ const handleAddEvent = async () => {
         console.error('Error adding event:', error);
     }
 };
-
 
 const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
     try {
@@ -138,7 +119,6 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 </script>
 
 <template>
-   
     <div class="calendar-container">
         <div v-if="showForm" class="event-form">
             <input v-model="newEvent.title" type="text" placeholder="Title" required />
@@ -156,17 +136,18 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
         </div>
 
         <VueCal
-            style="height: 700px"
-            :events="events"
+            style="height: 400px; width: 400px"
             :editable-events="{ create: false, resize: false, drag: false, delete: false }"
             @event-change="handleEventChange"
             @event-delete="handleEventDelete"
+            :events="events"
+            events-on-month-view
+            :views="{ days: { cols: 5, rows: 1 }, month: {} }"
             view="month"
-            :views="['month', 'week', 'day']"
             :time-from="7 * 60"
-            :time-to="18 * 60"
-            :time-step="30"
-            :snap-to-interval="30"
+            :time-to="21 * 60"
+            :time-step="15"
+            :snap-to-interval="15"
         >
             <template #event="props">
                 <div>
@@ -180,8 +161,52 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 </template>
 
 <style scoped>
-/* Your scoped styles here */
 .calendar-container {
+    height: 441px;
+    width: 400px;
+    padding: 1rem;
+    font-family: Arial, sans-serif;
+}
+
+.vuecal__scrollable--month-view {
+    .vuecal__cell {
+        height: 50px;
+    }
+    .vuecal__event {
+        height: 48px;
+        margin-top: 1px;
+    }
+    .vuecal__event-details {
+        font-size: 11px;
+        white-space: nowrap;
+        padding: 0;
+    }
+    .vuecal__cell--has-events {
+        flex-direction: row-reverse;
+        overflow: hidden;
+        justify-content: flex-start;
+    }
+}
+.vuecal__cell--has-events {
+    background-color: #00dbff1c;
+}
+.vuecal {
+    --vuecal-primary-color: #a14619;
+    --vuecal-secondary-color: #2e2e2e;
+    --vuecal-base-color: #ffffff;
+    --vuecal-contrast-color: #000000;
+    --vuecal-border-color: color-mix(in srgb, var(--vuecal-base-color) 8%, transparent);
+    --vuecal-header-color: var(--vuecal-base-color);
+    --vuecal-event-color: rgb(253, 253, 253);
+    --vuecal-event-border-color: currentColor;
+    --vuecal-border-radius: 6 px;
+    --vuecal-height: 500 px;
+    --vuecal-min-schedule-width: 0 px;
+    --vuecal-min-cell-width: 0 px;
+    --vuecal-transition-duration: 0.25 s;
+}
+/* Your scoped styles here */
+/* .calendar-container {
     padding: 1rem;
     font-family: Arial, sans-serif;
     padding: 1rem;
@@ -277,5 +302,5 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     --vuecal-min-schedule-width: 0 px;
     --vuecal-min-cell-width: 0 px;
     --vuecal-transition-duration: 0.25 s;
-}
+} */
 </style>
