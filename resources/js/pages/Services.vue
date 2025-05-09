@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import MasterFooter from '@/components/MasterFooter.vue';
+import Navigation from '@/components/Navigation.vue';
 import { useForm } from '@inertiajs/vue3';
 
 const form = useForm({
@@ -16,8 +17,9 @@ function post(arg0: string) {
 </script>
 
 <template>
+    <Navigation></Navigation>
     <div class="font-sans text-gray-800">
-        <Navigation></Navigation>
+        
         <section class="flex h-screen items-center justify-center bg-cover bg-center text-center text-white">
             <div
                 class="justify-top container mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center"
@@ -30,8 +32,8 @@ function post(arg0: string) {
                 >
             </div>
         </section>
-        <MasterFooter></MasterFooter>
     </div>
+    <MasterFooter></MasterFooter>
 </template>
 
 <style>

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 Route::get('/welcome', function () {
     return Inertia::render('Welcome');
-})->name('welcome');
+})->name('home');
 
 Route::get('/about', function () {
     return Inertia::render('About');
