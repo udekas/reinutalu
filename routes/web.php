@@ -56,11 +56,6 @@ Route::post('/booking/send', [BookingController::class, 'send']);
 
 // Event routes
 Route::get('/events', [EventController::class, 'index']);
-Route::post('/events', [EventController::class, 'store']);
-Route::put('/events/{event}', [EventController::class, 'update']);
-Route::delete('/events/{event}', [EventController::class, 'destroy']);
-
-Route::get('/events/{event}/users', [EventController::class, 'getUsers']);
 
 // Protected routes
 Route::middleware('auth')->get('/user', function (Request $request) {
@@ -87,7 +82,7 @@ Route::middleware('auth')->group(function () {
     });
     
     // User event actions for registered users
-    Route::get('/events', [EventController::class, 'index']);
+    
     Route::get('/events/{event}', [EventController::class, 'show']);
     Route::post('events/{eventId}/register', [EventRegistrationController::class, 'register']);
     Route::delete('/events/{eventId}/register', [EventRegistrationController::class, 'unregister']);

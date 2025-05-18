@@ -3,9 +3,7 @@ import Calendar from '@/components/Calendar.vue';
 import MasterFooter from '@/components/MasterFooter.vue';
 import Navigation from '@/components/Navigation.vue';
 
-const submit = () => {
-    post(route('booking'));
-};
+
 </script>
 <template>
     <div class="font-sans text-gray-800">
