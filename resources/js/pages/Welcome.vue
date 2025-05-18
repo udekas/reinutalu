@@ -1,59 +1,37 @@
 <script setup lang="ts">
 import Calendar from '@/components/Calendar.vue';
+import MasterFooter from '@/components/MasterFooter.vue';
+import Navigation from '@/components/Navigation.vue';
+
+const submit = () => {
+    post(route('booking'));
+};
 </script>
 <template>
     <div class="font-sans text-gray-800">
-        <header class="bg-opacity-90 fixed z-40 w-full bg-white shadow-md" :class="{ 'mt-10': showAuthNav }">
-            <nav class="container mx-auto flex items-center justify-between px-4 py-4">
-                <div class="logo text-primary flex items-center text-2xl font-bold">
-                    <i class="fas fa-horse mr-2"></i>
-                    <span>Reinu Ratsatalu</span>
-                </div>
-
-                <div class="hidden items-center space-x-4 md:flex">
-                    <a href="'teenused'" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Teenused</a>
-                    <a href="about.html" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Meist</a>
-                    <a href="/gallery" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Galerii</a>
-                    <a href="/login" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Log in</a>
-                    <a href="/register" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Register</a>
-                </div>
-
-                <!-- Mobile menu button -->
-                <div class="burger cursor-pointer md:hidden" @click="toggleMobileMenu">
-                    <div class="line1 bg-primary my-1.5 h-0.5 w-6 transition"></div>
-                    <div class="line2 bg-primary my-1.5 h-0.5 w-6 transition"></div>
-                    <div class="line3 bg-primary my-1.5 h-0.5 w-6 transition"></div>
-                </div>
-
-                <!-- Mobile menu (hidden on desktop) -->
-                <ul
-                    class="nav-links absolute top-20 left-0 w-full bg-white px-4 py-4 transition-all duration-500 ease-out md:hidden"
-                    :class="{ 'active pointer-events-auto': mobileMenuOpen, 'pointer-events-none': !mobileMenuOpen }"
-                >
-                    <li class="my-2"><a href="index.html" class="hover:text-primary transition">Avaleht</a></li>
-                    <li class="my-2"><a href="#teenused" class="hover:text-primary transition">Teenused</a></li>
-                    <li class="my-2"><a href="about.html" class="hover:text-primary transition">Meist</a></li>
-                    <li class="my-2"><a href="Gallery.vue" class="hover:text-primary transition">Galerii</a></li>
-                    <li class="my-2"><a href="#kontakt" class="hover:text-primary transition">Kontakt</a></li>
-                </ul>
-            </nav>
-        </header>
-
+        <Navigation></Navigation>
         <!-- Hero Section -->
-        <section class="flex h-screen items-center justify-center bg-cover bg-center text-center text-white">
+        <section class="flex flex-col md:flex-row md:h-screen items-center justify-center bg-cover bg-center text-center text-white">
             <div
-                class="justify-top container mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center"
+                class="justify-top container pt-10 mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center"
             >
                 <h1 class="mx-auto mt-24 text-4xl font-bold text-yellow-950 md:text-5xl lg:text-6xl">Koge vabadust hobuse seljas</h1>
                 <p class="mx-auto my-12 max-w-2xl text-xl text-yellow-950 md:text-2xl">
                     Avastage maalilisi radu või õppige ratsutama meie kogenud treenerite juhendamisel
                 </p>
-                <a href="#broneeri" class="bg-primary my-20 inline-block rounded-md px-8 py-3 text-white transition hover:bg-[#6d4a2a8d]"
-                    >Broneeri sõit</a
+
                 >
             </div>
-            <div class="">
+            <div class="my-10 mr-8">
                 <Calendar />
+                <a
+                    :href="route('booking')"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bg-primary inline-block rounded-md px-8 py-3 text-white transition hover:bg-[#6d4a2a8d]"
+                >
+                    Broneeri sõit
+                </a>
             </div>
         </section>
 
@@ -123,78 +101,8 @@ import Calendar from '@/components/Calendar.vue';
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer id="kontakt" class="bg-gray-800 pt-12 pb-6 text-white">
-            <div class="container mx-auto px-4">
-                <div class="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
-                    <!-- Contact Info -->
-                    <div>
-                        <h3 class="text-primary mb-4 text-xl font-bold">Kontakt</h3>
-                        <div class="space-y-3">
-                            <p class="flex items-start">
-                                <i class="fas fa-map-marker-alt text-primary mt-1 mr-3"></i>
-                                <span>Reinu Ratsatalu, Kõruse küla, 93440, Saaremaa, Eesti</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-phone text-primary mt-1 mr-3"></i>
-                                <span>+372 525 32 65</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-envelope text-primary mt-1 mr-3"></i>
-                                <span>reinuratsatalu@gmail.com</span>
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Hours -->
-                    <div>
-                        <h3 class="text-primary mb-4 text-xl font-bold">Lahtiolekuajad</h3>
-                        <div class="space-y-3">
-                            <p>E-R: 9:00 - 21:00</p>
-                            <p>Laupäev-Pühapäev: 10:00 - 20:00</p>
-                        </div>
-                    </div>
-
-                    <!-- Social -->
-                    <div>
-                        <h3 class="text-primary mb-4 text-xl font-bold">Jälgi meid</h3>
-                        <div class="flex space-x-4">
-                            <a href="#" class="hover:text-primary text-2xl text-white transition">
-                                <i class="fab fa-facebook"></i>
-                            </a>
-                            <a href="#" class="hover:text-primary text-2xl text-white transition">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border-t border-gray-700 pt-6 text-center">
-                    <p>&copy; 2025 R Ratsatalu. Kõik õigused kaitstud.</p>
-                </div>
-            </div>
-        </footer>
+        <MasterFooter></MasterFooter>
     </div>
 </template>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-.nav-links {
-    clip-path: circle(0px at 90% -10%);
-}
-
-.nav-links.active {
-    clip-path: circle(1000px at 90% -10%);
-}
-
-.toggle .line1 {
-    transform: rotate(-45deg) translate(-5px, 6px);
-}
-.toggle .line2 {
-    opacity: 0;
-}
-.toggle .line3 {
-    transform: rotate(45deg) translate(-5px, -6px);
-}
-</style>

@@ -9,9 +9,25 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventRegistrationController;
 use Illuminate\Http\Request;
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return Inertia::render('Welcome');
 })->name('home');
+
+Route::get('/about', function () {
+    return Inertia::render('About');
+})->name('about');
+
+Route::get('/gallery', function () {
+    return Inertia::render('Gallery');
+})->name('gallery');
+
+Route::get('/services', function () {
+    return Inertia::render('Services');
+})->name('services');
+
+Route::get('/booking', function () {
+    return Inertia::render('Booking');
+})->name('booking');
 
 // User dashboard route
 Route::get('dashboard', function () {
@@ -27,6 +43,16 @@ Route::get('admin/dashboard', function () {
 Route::get('users', [AdminUserController::class, 'index'])
     ->middleware(['auth', 'admin']) // Ensure only authenticated admins can access
     ->name('users');
+
+    
+
+
+use App\Http\Controllers\BookingController;
+
+
+Route::post('/booking/send', [BookingController::class, 'send']);
+
+
 
 // Event routes
 Route::get('/events', [EventController::class, 'index']);

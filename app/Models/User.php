@@ -61,7 +61,7 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->is_admin; // Assuming you have an is_admin field in your users table
+        return $this->is_admin; 
     }
 
 

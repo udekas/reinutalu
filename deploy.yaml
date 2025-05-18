@@ -1,0 +1,36 @@
+import: 
+  - recipe/laravel.php
+
+config:
+  repository: 'git@github.com:udekas/reinutalu.git'
+
+
+hosts:
+  stage:
+    hostname: 'ta23heinmets.itmajakas.ee'
+    http_user: virt123054
+    remote_user: virt123054
+    deploy_path: '~/domeenid/www.ta23heinmets.itmajakas.ee/reinutalu'
+  # hosts:
+  #   :
+  #     remote_user: deployer
+  #     deploy_path: '~/reinutalu'
+
+tasks:
+
+  opcache:clear:
+    - run: killall php83-cgi || true
+
+  deploy:
+    - 'deploy:prepare'
+    - 'deploy:vendors'
+    - 'artisan:storage:link'
+    - 'artisan:optimize:clear'
+    - 'artisan:optimize'
+    - 'deploy:publish'
+
+after:
+  deploy:failed: deploy:unlock
+
+before:
+  deploy:success: opcache:clear
