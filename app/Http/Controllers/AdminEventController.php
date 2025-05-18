@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class AdminEventController extends Controller
 {
-    // Only allow admin users to access these routes
     public function __construct()
     {
         $this->middleware('admin');
@@ -16,13 +15,11 @@ class AdminEventController extends Controller
 
     public function index()
     {
-        // Get all events to show on the admin panel
          return Event::with('users:id,name,email')->get();
     }
 
     public function store(Request $request)
     {
-        // Validate event data
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'start' => 'required|date|before:end',
@@ -35,7 +32,6 @@ class AdminEventController extends Controller
 
     public function update(Request $request, Event $event)
     {
-        // Validate event data
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'start' => 'required|date|before:end',
@@ -48,7 +44,6 @@ class AdminEventController extends Controller
 
     public function destroy(Event $event)
     {
-        // Delete event
         $event->delete();
         return response()->json(['message' => 'Event deleted']);
     }
