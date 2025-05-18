@@ -12,8 +12,8 @@
                 <a href="services" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Teenused</a>
                 <a href="about" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Meist</a>
                 <a href="gallery" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Galerii</a>
-                <a href="login" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Log in</a>
-                <a href="register" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Register</a>
+                <a href="login" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Logi sisse</a>
+                <a href="register" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Registreeri</a>
             </div>
 
             <!-- Mobile menu button -->
