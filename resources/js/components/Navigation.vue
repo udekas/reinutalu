@@ -5,7 +5,7 @@
         <nav class="container mx-auto flex items-center justify-between py-4 pr-8">
             <div class="logo text-primary flex items-center text-2xl font-bold">
                 <i class="fas fa-horse mr-2"></i>
-                <a href="welcome">Reinu Ratsatalu</a>
+                <a href="/">Reinu Ratsatalu</a>
             </div>
 
             <div class="hidden items-center space-x-4 md:flex">
@@ -28,7 +28,7 @@
                 class="nav-links absolute top-20 left-0 w-full bg-white px-4 py-4 transition-all duration-500 ease-out md:hidden"
                 :class="{ 'active pointer-events-auto': mobileMenuOpen, 'pointer-events-none': !mobileMenuOpen }"
             >
-                <li class="my-2"><a href="welcome" class="hover:text-primary transition">Avaleht</a></li>
+                <li class="my-2"><a href="/" class="hover:text-primary transition">Avaleht</a></li>
                 <li class="my-2"><a href="services" class="hover:text-primary transition">Teenused</a></li>
                 <li class="my-2"><a href="about" class="hover:text-primary transition">Meist</a></li>
                 <li class="my-2"><a href="gallery" class="hover:text-primary transition">Galerii</a></li>
