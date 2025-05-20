@@ -26,7 +26,7 @@ class AdminUserController extends Controller
         $users = $query->orderBy('name')->paginate($perPage)->withQueryString();
 
         // Get all events for the modal dropdowns
-        $events = Event::select('id', 'title')->orderBy('date')->get();
+        $events = Event::select('id', 'title')->orderBy('start', 'asc')->get();
 
         // dd($users->items());
 
