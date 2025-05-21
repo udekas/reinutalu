@@ -177,7 +177,19 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             </template>
         </VueCal>
 
-        <Popup v-if="popupVisible" :event="selectedEvent" :visible="popupVisible" @close="closePopup" />
+        <Popup
+            v-if="selectedEvent"
+            :event="selectedEvent"
+            :visible="popupVisible"
+            @close="closePopup"
+            @updated="fetchEvents"
+            @deleted="
+                () => {
+                    fetchEvents();
+                    closePopup();
+                }
+            "
+        />
     </div>
 </template>
 

@@ -191,6 +191,8 @@ const saveChanges = async () => {
     border-radius: 8px;
     max-width: 500px;
     width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 .popup-header {
     display: flex;
