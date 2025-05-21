@@ -10,7 +10,7 @@ class Event extends Model
     use HasFactory;
 
     // Add 'start' and 'end' to the fillable property
-    protected $fillable = ['title', 'description', 'start', 'end']; // <-- Add start and end here
+    protected $fillable = ['title', 'description', 'start', 'end']; 
 
     public function users()
 {

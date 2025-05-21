@@ -24,6 +24,7 @@ class AdminEventController extends Controller
             'title' => 'required|string|max:255',
             'start' => 'required|date|before:end',
             'end' => 'required|date|after:start',
+            'description' => 'nullable|string',
         ]);
 
         $event = Event::create($validated);
