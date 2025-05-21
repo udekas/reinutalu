@@ -31,18 +31,6 @@ const editForm = ref({
     end: '',
 });
 
-// Watch event changes deeply to always sync form and users
-watch(
-    () => props.event,
-    (newEvent) => {
-        if (newEvent && newEvent.id) {
-            fetchUsers();
-            resetEditForm();
-        }
-    },
-    { immediate: true, deep: true },
-);
-
 const fetchUsers = async () => {
     if (!props.event.id) return;
     loading.value = true;
@@ -94,6 +82,17 @@ const resetEditForm = () => {
         end: props.event.end || '',
     };
 };
+  // Watch event changes deeply to always sync form and users
+  watch(
+      () => props.event,
+      (newEvent) => {
+          if (newEvent && newEvent.id) {
+              fetchUsers();
+              resetEditForm();
+          }
+      },
+      { immediate: true, deep: true },
+  );
 
 const saveChanges = async () => {
     saving.value = true;
