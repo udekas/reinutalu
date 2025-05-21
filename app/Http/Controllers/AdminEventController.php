@@ -28,8 +28,9 @@ class AdminEventController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $validated['start'] = Carbon::parse($validated['start'])->toDateTimeString();
-        $validated['end'] = Carbon::parse($validated['end'])->toDateTimeString();
+        $validated['start'] = Carbon::parse($validated['start'], 'Europe/Tallinn')->setTimezone('UTC')->toDateTimeString();
+        $validated['end'] = Carbon::parse($validated['end'], 'Europe/Tallinn')->setTimezone('UTC')->toDateTimeString();
+        
 
         $event = Event::create($validated);
         return response()->json($event);
@@ -43,8 +44,9 @@ class AdminEventController extends Controller
             'end' => 'required|date|after:start',
         ]);
 
-        $validated['start'] = Carbon::parse($validated['start'])->toDateTimeString();
-        $validated['end'] = Carbon::parse($validated['end'])->toDateTimeString();
+        $validated['start'] = Carbon::parse($validated['start'], 'Europe/Tallinn')->setTimezone('UTC')->toDateTimeString();
+        $validated['end'] = Carbon::parse($validated['end'], 'Europe/Tallinn')->setTimezone('UTC')->toDateTimeString();
+
 
         $event->update($validated);
         return response()->json($event);
