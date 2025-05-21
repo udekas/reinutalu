@@ -81,7 +81,7 @@ const handleAddEvent = async () => {
 
 const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
     try {
-        const res = await axios.put(`/events/${event.id}`, {
+        const res = await axios.put(`/admin/events/${event.id}`, {
             title: event.title,
             start: new Date(event.start).toISOString(),
             end: new Date(event.end).toISOString(),
@@ -100,7 +100,7 @@ const handleEventDelete = async (event: CalendarEvent) => {
     }
 
     try {
-        await axios.delete(`/events/${event.id}`);
+        await axios.delete(`/admin/events/${event.id}`);
         events.value = events.value.filter((e) => e.id !== event.id);
     } catch (error) {
         console.error('Delete failed:', error);
