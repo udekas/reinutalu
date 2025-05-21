@@ -36,7 +36,7 @@ const fetchUsers = async () => {
     loading.value = true;
 
     try {
-        const res = await axios.get(`/events/${props.event.id}/users`);
+        const res = await axios.get(`/admin/events/${props.event.id}/users`);
         users.value = res.data;
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -53,7 +53,7 @@ const unregisterUser = async (userId: number) => {
     if (!props.event.id) return;
 
     try {
-        const response = await axios.delete(`/events/${props.event.id}/users/${userId}/unregister`);
+        const response = await axios.delete(`/admin/events/${props.event.id}/users/${userId}/unregister`);
         if (response.status === 200) {
             users.value = users.value.filter((user) => user.id !== userId);
         } else {
@@ -66,7 +66,7 @@ const unregisterUser = async (userId: number) => {
 
 const deleteEvent = async () => {
     try {
-        await axios.delete(`/events/${props.event.id}`);
+        await axios.delete(`/admin/events/${props.event.id}`);
         emit('deleted');
         closePopup();
     } catch (error) {
@@ -97,7 +97,7 @@ const resetEditForm = () => {
 const saveChanges = async () => {
     saving.value = true;
     try {
-        const res = await axios.put(`/events/${props.event.id}`, editForm.value);
+        const res = await axios.put(`/admin/events/${props.event.id}`, editForm.value);
         // Update props manually (if mutable in parent) or rely on emit
         emit('updated');
         isEditing.value = false;
