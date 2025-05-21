@@ -57,7 +57,7 @@ const handleAddEvent = async () => {
     const end = new Date(`${date}T${endTime}`);
 
     try {
-        await axios.post('/events', {
+        await axios.post('/admin/events', {
             title,
             description,
             start: start.toISOString(),
