@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,9 @@ class AdminEventController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        $validated['start'] = Carbon::parse($validated['start'])->toDateTimeString();
+        $validated['end'] = Carbon::parse($validated['end'])->toDateTimeString();
+
         $event = Event::create($validated);
         return response()->json($event);
     }
@@ -38,6 +42,9 @@ class AdminEventController extends Controller
             'start' => 'required|date|before:end',
             'end' => 'required|date|after:start',
         ]);
+
+        $validated['start'] = Carbon::parse($validated['start'])->toDateTimeString();
+        $validated['end'] = Carbon::parse($validated['end'])->toDateTimeString();
 
         $event->update($validated);
         return response()->json($event);
