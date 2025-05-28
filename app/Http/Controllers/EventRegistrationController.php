@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,12 +60,10 @@ class EventRegistrationController extends Controller
         return response()->json($events);
     }
 
-    public function adminUnregister($eventId, $userId)
+    public function adminUnregister(Event $event, User $user)
 {
-    $event = Event::findOrFail($eventId);
-
-    if ($event->users()->where('user_id', $userId)->exists()) {
-        $event->users()->detach($userId);
+    if ($event->users()->where('user_id', $user->id)->exists()) {
+        $event->users()->detach($user->id); // Remove the user's registration from the event
         return response()->json(['message' => 'User successfully unregistered from event']);
     }
 

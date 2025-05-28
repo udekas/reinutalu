@@ -53,7 +53,7 @@ const unregisterUser = async (userId: number) => {
     if (!props.event.id) return;
 
     try {
-        const response = await axios.delete(`/admin/events/${props.event.id}/users/${userId}/unregister`);
+        const response = await axios.delete(`/events/${props.event.id}/users/${userId}/unregister`);
         if (response.status === 200) {
             users.value = users.value.filter((user) => user.id !== userId);
         } else {
@@ -82,17 +82,17 @@ const resetEditForm = () => {
         end: props.event.end || '',
     };
 };
-  // Watch event changes deeply to always sync form and users
-  watch(
-      () => props.event,
-      (newEvent) => {
-          if (newEvent && newEvent.id) {
-              fetchUsers();
-              resetEditForm();
-          }
-      },
-      { immediate: true, deep: true },
-  );
+// Watch event changes deeply to always sync form and users
+watch(
+    () => props.event,
+    (newEvent) => {
+        if (newEvent && newEvent.id) {
+            fetchUsers();
+            resetEditForm();
+        }
+    },
+    { immediate: true, deep: true },
+);
 
 const saveChanges = async () => {
     saving.value = true;
@@ -147,7 +147,6 @@ const saveChanges = async () => {
 
                     <h4>Who are attending:</h4>
                     <div v-if="loading" class="loading-spinner">Loading...</div>
-
                     <ul v-if="!loading && users.length" class="user-list">
                         <li v-for="user in users" :key="user.id" class="user-item">
                             <div class="user-info">

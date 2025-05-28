@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/events/{event}', [EventController::class, 'show']);
     Route::post('events/{eventId}/register', [EventRegistrationController::class, 'register']);
     Route::delete('/events/{eventId}/register', [EventRegistrationController::class, 'unregister']);
-    Route::delete('/events/{eventId}/users/{userId}/unregister', [EventRegistrationController::class, 'adminUnregister']);
+    Route::delete('/events/{event}/users/{user}/unregister', [EventRegistrationController::class, 'adminUnregister']);
     
     Route::get('my-events', [EventRegistrationController::class, 'myEvents']);
 });
