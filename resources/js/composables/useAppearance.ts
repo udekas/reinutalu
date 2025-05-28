@@ -6,6 +6,8 @@ export function updateTheme(value: Appearance) {
     if (typeof window === 'undefined') {
         return;
     }
+    document.documentElement.classList.toggle('dark', false);
+    return
 
     if (value === 'system') {
         const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
