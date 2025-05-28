@@ -14,6 +14,12 @@ class AdminEventController extends Controller
         $this->middleware('admin');
     }
 
+    public function getEventUsers(Event $event)
+    {
+        $users = $event->users()->get();
+        return response()->json($users);
+    }
+
     public function index()
     {
          return Event::with('users:id,name,email')->get();

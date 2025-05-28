@@ -158,7 +158,7 @@ const saveChanges = async () => {
                         </li>
                     </ul>
 
-                    <p v-if="!loading && users.length === 0">No users registered for this event.</p>
+                    <p v-if="loading && users.length === 0">No users registered for this event.</p>
                 </div>
             </div>
 

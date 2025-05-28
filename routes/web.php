@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function () {
         Route::put('events/{event}', [AdminEventController::class, 'update']);
         Route::delete('events/{event}', [AdminEventController::class, 'destroy']);
         Route::get('events/{event}', [AdminEventController::class, 'show']);
+        Route::get('events/{event}/users', [AdminEventController::class, 'getEventUsers']);
+
         
         // User management routes
         Route::delete('/users/{user}', [AdminUserController::class, 'destroy']);
