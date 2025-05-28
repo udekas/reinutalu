@@ -9,7 +9,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventRegistrationController;
 use Illuminate\Http\Request;
 
-Route::get('/welcome', function () {
+Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 

@@ -5,7 +5,7 @@
         <nav class="container mx-auto flex items-center justify-between py-4 pr-8">
             <div class="logo text-primary flex items-center text-2xl font-bold">
                 <i class="fas fa-horse mr-2"></i>
-                <a href="welcome">Reinu Ratsatalu</a>
+                <a href="/.">Reinu Ratsatalu</a>
             </div>
 
             <div class="hidden items-center space-x-4 md:flex">
@@ -13,7 +13,7 @@
                 <a href="about" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Meist</a>
                 <a href="gallery" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Galerii</a>
                 <a href="login" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Logi sisse</a>
-                <a href="register" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Registreeri</a>
+                <!-- <a href="register" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Registreeri</a> -->
             </div>
 
             <!-- Mobile menu button -->
@@ -33,6 +33,7 @@
                 <li class="my-2"><a href="about" class="hover:text-primary transition">Meist</a></li>
                 <li class="my-2"><a href="gallery" class="hover:text-primary transition">Galerii</a></li>
                 <li class="my-2"><a href="contact" class="hover:text-primary transition">Kontakt</a></li>
+                <li class="my-2"><a href="login" class="hover:text-primary transition">Logi sisse</a></li>
             </ul>
         </nav>
     </header>
