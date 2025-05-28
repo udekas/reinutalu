@@ -60,8 +60,8 @@ const handleAddEvent = async () => {
         await axios.post('/admin/events', {
             title,
             description,
-            start: start.toISOString(),
-            end: end.toISOString(),
+            start: `${date}T${startTime}`,
+            end: `${date}T${endTime}`,
         });
 
         await fetchEvents();
