@@ -26,7 +26,7 @@
             <!-- Mobile menu (hidden on desktop) -->
             <ul
                 class="nav-links absolute top-20 left-0 w-full bg-white px-4 py-4 transition-all duration-500 ease-out md:hidden"
-                :class="{ 'active pointer-events-auto': mobileMenuOpen, 'pointer-events-none': !mobileMenuOpen }"
+                :class="{ 'active pointer-events-auto': mobileMenuOpen, 'pointer-events-none': !mobileMenuOpen  }"
             >
                 <li class="my-2"><a href="welcome" class="hover:text-primary transition">Avaleht</a></li>
                 <li class="my-2"><a href="services" class="hover:text-primary transition">Teenused</a></li>
