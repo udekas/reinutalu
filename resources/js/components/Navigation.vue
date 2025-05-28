@@ -5,7 +5,7 @@
         <nav class="container mx-auto flex items-center justify-between py-4 pr-8">
             <div class="logo text-primary flex items-center text-2xl font-bold">
                 <i class="fas fa-horse mr-2"></i>
-                <a href="/.">Reinu Ratsatalu</a>
+                <a href="/">Reinu Ratsatalu</a>
             </div>
 
             <div class="hidden items-center space-x-4 md:flex">
