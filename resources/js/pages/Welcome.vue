@@ -4,17 +4,12 @@ import MasterFooter from '@/components/MasterFooter.vue';
 import Navigation from '@/components/Navigation.vue';
 </script>
 <template>
+    <Navigation></Navigation>
     <div class="font-sans text-gray-800">
-        <Navigation></Navigation>
         <!-- Hero Section -->
-        <section class="flex flex-col items-center justify-center bg-cover bg-center text-center text-white md:h-screen md:flex-row">
-            <div
-                class="justify-top container mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 pt-10 text-center"
-            >
-                <h1 class="mx-auto mt-24 text-4xl font-bold text-yellow-950 md:text-5xl lg:text-6xl">Koge vabadust hobuse seljas</h1>
-            </div>
+        <section class="container aspect-video max-w-screen bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center">
+            <h1 class="hidden sm:block pt-24 mx-auto text-4xl font-bold sm:text-[5vw]">Koge vabadust hobuse seljas</h1>
         </section>
-
         <!-- Booking Section -->
         <section id="broneeri" class="bg-secondary py-16">
             <div class="container mx-auto px-4">
@@ -47,7 +42,7 @@ import Navigation from '@/components/Navigation.vue';
                             class="bg-primary inline-block rounded-md px-6 py-2 text-sm text-white transition hover:bg-[#6d4a2a]"
                             >Küsi pakkumist</a
                         >
-                        <Calendar />
+                        <!-- <Calendar /> -->
                         <div class="my-10 mr-8">
                             <a
                                 :href="route('booking')"

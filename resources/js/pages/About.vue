@@ -5,13 +5,12 @@ import Navigation from '@/components/Navigation.vue';
 
 <template>
     <Navigation />
+    <section class="container aspect-video max-w-screen bg-[url(/assets/DSC_0978.JPG)] bg-cover bg-center px-4 text-center">
+            <h1 class="hidden sm:block pt-24 mx-auto text-4xl font-bold sm:text-[5vw]">Meist</h1>
+        </section>
 
     <section>
-        <div
-            class="container mx-auto flex min-h-screen flex-col items-center justify-start bg-[url(/assets/DSC_0978.JPG)] bg-cover bg-center px-4 pt-10 text-center"
-        >
-            <h1 class="text-4xl font-bold text-yellow-950 md:text-5xl lg:text-6xl">Meist</h1>
-        </div>
+
 
         <!-- Text Boxes Section -->
         <div class="px-4 pt-10">
