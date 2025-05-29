@@ -22,7 +22,7 @@ import Navigation from '@/components/Navigation.vue';
           Broneerige oma seiklus
         </h2>
 
-        <div class="mx-auto max-w-100% flex flex-col gap-8 md:flex-row md:justify-between">
+        <div class="w-full flex flex-col gap-8 md:flex-row md:justify-between px-8">
           <!-- Trail Rides -->
           <div class="flex-1 rounded-lg bg-white p-8 text-center shadow-lg transition hover:-translate-y-2">
             <i class="fas fa-horse-head text-primary mb-4 text-5xl" aria-hidden="true"></i>
