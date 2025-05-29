@@ -12,7 +12,6 @@ import Navigation from '@/components/Navigation.vue';
         <section class="container aspect-video max-w-screen bg-[url(/assets/DSC_1078.webp)] bg-cover bg-center px-4 text-center">
             <h1 class="mx-auto hidden pt-24 text-4xl font-bold sm:block sm:text-[5vw]">Koge vabadust hobuse seljas</h1>
         </section>
-
         <!-- Booking Section -->
         <section id="broneeri" class="bg-secondary py-16">
             <div class="container mx-auto px-4">
