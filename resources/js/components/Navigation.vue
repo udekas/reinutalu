@@ -1,4 +1,7 @@
-<script setup></script>
+<script setup>
+import { Link } from '@inertiajs/vue3';
+
+</script>
 
 <template>
     <header class="bg-opacity-90 fixed z-40 w-full bg-white shadow-md" :class="{ 'mt-10': showAuthNav }">

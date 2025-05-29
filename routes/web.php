@@ -32,12 +32,12 @@ Route::get('/booking', function () {
 // User dashboard route
 Route::get('dashboard', function () {
     return Inertia::render('UserDashboard'); // User dashboard
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'dashboard'])->name('dashboard');
 
 // Admin dashboard route
 Route::get('admin/dashboard', function () {
     return Inertia::render('AdminDashboard'); // Admin dashboard
-})->middleware(['auth', 'admin'])->name('admin.dashboard');
+})->middleware(['auth', 'admin', 'dashboard'])->name('admin.dashboard');
 
 // Admin users route
 Route::get('users', [AdminUserController::class, 'index'])
