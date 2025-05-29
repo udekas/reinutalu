@@ -4,17 +4,12 @@ import MasterFooter from '@/components/MasterFooter.vue';
 import Navigation from '@/components/Navigation.vue';
 </script>
 <template>
+    <Navigation></Navigation>
     <div class="font-sans text-gray-800">
-        <Navigation></Navigation>
         <!-- Hero Section -->
-        <section class="flex flex-col items-center justify-center bg-cover bg-center text-center text-white md:h-screen md:flex-row">
-            <div
-                class="justify-top container pt-10 mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.webp)] bg-cover bg-center px-4 text-center"
-            >
-                <h1 class="mx-auto mt-24 text-4xl font-bold text-yellow-950 md:text-5xl lg:text-6xl">Koge vabadust hobuse seljas</h1>
-            </div>
+        <section class="container aspect-video max-w-screen bg-[url(/assets/DSC_1078.webp)] bg-cover bg-center px-4 text-center">
+            <h1 class="mx-auto hidden pt-24 text-4xl font-bold sm:block sm:text-[5vw]">Koge vabadust hobuse seljas</h1>
         </section>
-
         <!-- Booking Section -->
         <section id="broneeri" class="bg-secondary py-16">
             <div class="container mx-auto px-4">
@@ -47,23 +42,26 @@ import Navigation from '@/components/Navigation.vue';
                             class="bg-primary inline-block rounded-md px-6 py-2 text-sm text-white transition hover:bg-[#6d4a2a]"
                             >Küsi pakkumist</a
                         >
-                        <div class="my-10 mr-8">
-                            <a
-                            :href="route('booking')"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="bg-primary inline-block rounded-md px-8 py-3 text-white transition hover:bg-[#6d4a2a8d]"
-                            >
-                            Broneeri sõit
-                        </a>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="w-full mt-10 px-48 flex flex-col">
-                <Calendar class="bg-white w-full max-w-[1000px] mx-auto max-h-[400px]" />
-        </div>
-    </section>
+            <div class="mt-10 flex w-full flex-col px-48">
+                <div class="overflow-hidden rounded-lg shadow-lg">
+                    <Calendar class="mx-auto max-h-[500px] w-full max-w-[1200px] bg-white " />
+
+                </div>
+                <div class="my-5 flex justify-center">
+                    <a
+                        :href="route('booking')"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="bg-primary inline-block rounded-md px-8 py-3 text-white transition hover:bg-[#6d4a2a8d]"
+                    >
+                        Broneeri sõit
+                    </a>
+                </div>
+            </div>
+        </section>
 
         <!-- Preview of Horses -->
         <section class="py-16">
