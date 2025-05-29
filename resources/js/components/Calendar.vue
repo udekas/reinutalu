@@ -38,7 +38,9 @@ onMounted(fetchEvents);
 </script>
 
 <template>
-        <VueCal 
+    <div class="calendar-container">
+        <VueCal
+            style="height: 400px; width: 400px"
             :editable-events="{ create: false, resize: false, drag: false, delete: false }"
             :events="events"
             events-on-month-view
@@ -57,7 +59,7 @@ onMounted(fetchEvents);
                 </div>
             </template>
         </VueCal>
-    
+    </div>
 </template>
 
 <style scoped>

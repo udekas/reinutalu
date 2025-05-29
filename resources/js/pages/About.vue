@@ -5,7 +5,7 @@ import Navigation from '@/components/Navigation.vue';
 
 <template>
     <Navigation />
-    <section class="container aspect-video max-w-screen bg-[url(/assets/DSC_0978.JPG)] bg-cover bg-center px-4 text-center">
+    <section class="container aspect-video max-w-screen bg-[url(/assets/DSC_0978.webp)] bg-cover bg-center px-4 text-center">
             <h1 class="hidden sm:block pt-24 mx-auto text-4xl font-bold sm:text-[5vw]">Meist</h1>
         </section>
 
