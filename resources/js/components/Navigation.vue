@@ -12,7 +12,22 @@
                 <a href="services" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Teenused</a>
                 <a href="about" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Meist</a>
                 <a href="gallery" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Galerii</a>
-                <a href="login" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Logi sisse</a>
+                <Link
+                    v-if="$page.props.auth.user"
+                    :href="route('dashboard')"
+                    class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                >
+                    Dashboard
+                </Link>
+                <template v-else>
+                    <Link
+                        :href="route('login')"
+                        class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                    >
+                        Logi sisse
+                    </Link>
+                </template>
+                <!-- <a href="login" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Logi sisse</a> -->
                 <!-- <a href="register" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Registreeri</a> -->
             </div>
 
@@ -26,7 +41,7 @@
             <!-- Mobile menu (hidden on desktop) -->
             <ul
                 class="nav-links absolute top-20 left-0 w-full bg-white px-4 py-4 transition-all duration-500 ease-out md:hidden"
-                :class="{ 'active pointer-events-auto': mobileMenuOpen, 'pointer-events-none': !mobileMenuOpen  }"
+                :class="{ 'active pointer-events-auto': mobileMenuOpen, 'pointer-events-none': !mobileMenuOpen }"
             >
                 <li class="my-2"><a href="/" class="hover:text-primary transition">Avaleht</a></li>
                 <li class="my-2"><a href="services" class="hover:text-primary transition">Teenused</a></li>
