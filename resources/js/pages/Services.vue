@@ -25,9 +25,7 @@ function post(arg0: string) {
                 class="justify-top container mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center"
             >
                 <h1 class="mx-auto mt-24 text-4xl font-bold text-yellow-950 md:text-5xl lg:text-6xl">Koge vabadust hobuse seljas</h1>
-                <p class="mx-auto my-12 max-w-2xl text-xl text-yellow-950 md:text-2xl">
-                    Avastage maalilisi radu või õppige ratsutama meie kogenud treenerite juhendamisel
-                </p>
+                
 
                 >
             </div>
