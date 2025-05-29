@@ -18,7 +18,7 @@ import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import type { BreadcrumbItem, NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { Menu, Search } from 'lucide-vue-next';
+import { LayoutGrid, Menu, Search } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface Props {
@@ -38,7 +38,22 @@ const activeItemStyles = computed(
     () => (url: string) => (isCurrentRoute.value(url) ? 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100' : ''),
 );
 
-const mainNavItems: NavItem[] = [];
+
+// Make sure the user object is available before using it
+
+// Compute the navigation items based on the user's role
+const mainNavItems = computed(() => {
+    if (auth.value?.user?.is_admin) {
+        return [
+            { title: 'Dashboard', href: '/admin/dashboard', icon: LayoutGrid },
+            { title: 'Users', href: '/users', icon: LayoutGrid },
+        ];
+    }
+
+    return [
+        { title: 'Dashboard', href: '/dashboard', icon: LayoutGrid },
+    ];
+});
 
 const rightNavItems: NavItem[] = [];
 </script>
