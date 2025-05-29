@@ -45,8 +45,8 @@ const activeItemStyles = computed(
 const mainNavItems = computed(() => {
     if (auth.value?.user?.is_admin) {
         return [
-            { title: 'Dashboard', href: '/admin/dashboard', icon: LayoutGrid },
-            { title: 'Users', href: '/users', icon: LayoutGrid },
+            { title: 'Minu konto', href: '/admin/dashboard', icon: LayoutGrid },
+            { title: 'Kasutajad', href: '/users', icon: LayoutGrid },
         ];
     }
 

@@ -1,13 +1,17 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
+const mobileMenuOpen = ref(false);
+const toggleMobileMenu = () => {
+    mobileMenuOpen.value = !mobileMenuOpen.value;
+};
 
 </script>
 
 <template>
-    <header class="bg-opacity-90 fixed z-40 w-full bg-white shadow-md" :class="{ 'mt-10': showAuthNav }">
-        <nav class="container mx-auto flex items-center justify-between py-4 pr-8">
+    <header class="bg-opacity-90 fixed z-40 w-full px-4 bg-white shadow-md">
+        <nav class="container mx-auto flex items-center justify-between  px-4 py-4 pr-8">
             <div class="logo text-primary flex items-center text-2xl font-bold">
-                <i class="fas fa-horse mr-2"></i>
                 <a href="/">Reinu Ratsatalu</a>
             </div>
 
@@ -20,7 +24,7 @@ import { Link } from '@inertiajs/vue3';
                     :href="route('dashboard')"
                     class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                 >
-                    Dashboard
+                    Minu konto
                 </Link>
                 <template v-else>
                     <Link
@@ -30,8 +34,6 @@ import { Link } from '@inertiajs/vue3';
                         Logi sisse
                     </Link>
                 </template>
-                <!-- <a href="login" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Logi sisse</a> -->
-                <!-- <a href="register" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Registreeri</a> -->
             </div>
 
             <!-- Mobile menu button -->
@@ -42,7 +44,7 @@ import { Link } from '@inertiajs/vue3';
             </div>
 
             <!-- Mobile menu (hidden on desktop) -->
-            <ul
+            <ul v-if="mobileMenuOpen"
                 class="nav-links absolute top-20 left-0 w-full bg-white px-4 py-4 transition-all duration-500 ease-out md:hidden"
                 :class="{ 'active pointer-events-auto': mobileMenuOpen, 'pointer-events-none': !mobileMenuOpen }"
             >
@@ -50,7 +52,6 @@ import { Link } from '@inertiajs/vue3';
                 <li class="my-2"><a href="services" class="hover:text-primary transition">Teenused</a></li>
                 <li class="my-2"><a href="about" class="hover:text-primary transition">Meist</a></li>
                 <li class="my-2"><a href="gallery" class="hover:text-primary transition">Galerii</a></li>
-                <li class="my-2"><a href="contact" class="hover:text-primary transition">Kontakt</a></li>
                 <li class="my-2"><a href="login" class="hover:text-primary transition">Logi sisse</a></li>
             </ul>
         </nav>
