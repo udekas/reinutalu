@@ -47,21 +47,23 @@ import Navigation from '@/components/Navigation.vue';
                             class="bg-primary inline-block rounded-md px-6 py-2 text-sm text-white transition hover:bg-[#6d4a2a]"
                             >Küsi pakkumist</a
                         >
-                        <Calendar />
                         <div class="my-10 mr-8">
                             <a
-                                :href="route('booking')"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="bg-primary inline-block rounded-md px-8 py-3 text-white transition hover:bg-[#6d4a2a8d]"
+                            :href="route('booking')"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="bg-primary inline-block rounded-md px-8 py-3 text-white transition hover:bg-[#6d4a2a8d]"
                             >
-                                Broneeri sõit
-                            </a>
-                        </div>
+                            Broneeri sõit
+                        </a>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+        <div class="w-full mt-10 px-48 flex flex-col">
+                <Calendar class="bg-white w-full max-w-[1000px] mx-auto max-h-[400px]" />
+        </div>
+    </section>
 
         <!-- Preview of Horses -->
         <section class="py-16">
