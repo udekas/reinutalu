@@ -13,7 +13,7 @@
                 <a href="about" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Meist</a>
                 <a href="gallery" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Galerii</a>
                 <a href="login" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Logi sisse</a>
-                <a href="register" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Registreeri</a>
+                <!-- <a href="register" class="rounded-md px-4 py-2 transition hover:bg-gray-100">Registreeri</a> -->
             </div>
 
             <!-- Mobile menu button -->
@@ -26,13 +26,14 @@
             <!-- Mobile menu (hidden on desktop) -->
             <ul
                 class="nav-links absolute top-20 left-0 w-full bg-white px-4 py-4 transition-all duration-500 ease-out md:hidden"
-                :class="{ 'active pointer-events-auto': mobileMenuOpen, 'pointer-events-none': !mobileMenuOpen }"
+                :class="{ 'active pointer-events-auto': mobileMenuOpen, 'pointer-events-none': !mobileMenuOpen  }"
             >
                 <li class="my-2"><a href="/" class="hover:text-primary transition">Avaleht</a></li>
                 <li class="my-2"><a href="services" class="hover:text-primary transition">Teenused</a></li>
                 <li class="my-2"><a href="about" class="hover:text-primary transition">Meist</a></li>
                 <li class="my-2"><a href="gallery" class="hover:text-primary transition">Galerii</a></li>
                 <li class="my-2"><a href="contact" class="hover:text-primary transition">Kontakt</a></li>
+                <li class="my-2"><a href="login" class="hover:text-primary transition">Logi sisse</a></li>
             </ul>
         </nav>
     </header>

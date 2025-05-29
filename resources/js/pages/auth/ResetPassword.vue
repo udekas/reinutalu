@@ -31,8 +31,8 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthLayout title="Reset password" description="Please enter your new password below">
-        <Head title="Reset password" />
+    <AuthLayout title="Muuda parool" description="Sisesta uus parool">
+        <Head title="Muuda parool" />
 
         <form @submit.prevent="submit">
             <div class="grid gap-6">
@@ -43,12 +43,12 @@ const submit = () => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password">Password</Label>
+                    <Label for="password">Parool</Label>
                     <Input
                         id="password"
                         type="password"
                         name="password"
-                        autocomplete="new-password"
+                        autocomplete="uus parool"
                         v-model="form.password"
                         class="mt-1 block w-full"
                         autofocus
@@ -58,22 +58,22 @@ const submit = () => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation"> Confirm Password </Label>
+                    <Label for="password_confirmation"> Kinnita parool </Label>
                     <Input
                         id="password_confirmation"
                         type="password"
                         name="password_confirmation"
-                        autocomplete="new-password"
+                        autocomplete="uus parool"
                         v-model="form.password_confirmation"
                         class="mt-1 block w-full"
-                        placeholder="Confirm password"
+                        placeholder="Kinnita parool"
                     />
                     <InputError :message="form.errors.password_confirmation" />
                 </div>
 
                 <Button type="submit" class="mt-4 w-full" :disabled="form.processing">
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                    Reset password
+                    Uuenda parool
                 </Button>
             </div>
         </form>

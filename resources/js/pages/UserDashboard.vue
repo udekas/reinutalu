@@ -69,7 +69,7 @@ onMounted(fetchUserData);
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 text-2xl">
             <!-- Display user name or loading message -->
-            <h2 v-if="user">{{ user.name }}'s Registered Events</h2>
+            <h2 v-if="user">{{ user.name }}'i registreeritud üritused</h2>
             <p v-else>Loading user data...</p>
 
             <!-- Registered Events List -->
@@ -81,11 +81,11 @@ onMounted(fetchUserData);
                         :disabled="loadingEvents"
                         class="rounded bg-red-500 px-3 py-1 text-sm text-white hover:bg-red-600"
                     >
-                        Unregister
+                        Eemalda registreering
                     </button>
                 </li>
             </ul>
-            <p v-else>No events registered.</p>
+            <p v-else>Pole veel ühtegi üritust, millele oled registreerinud.</p>
         </div>
 
         <!-- Calendar Section -->

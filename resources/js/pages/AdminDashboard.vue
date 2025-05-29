@@ -13,16 +13,16 @@ const breadcrumbs: BreadcrumbItem[] = [
 </script>
 
 <template>
-    <Head title="Admin Dashboard - Reinu Ratsatalu" />
+    <Head title="Administraator - Reinu Ratsatalu" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="dashboard-container">
-            <h1 class="section-title">Admin Dashboard</h1>
-            <p class="section-description">Manage events, users, and more from this dashboard.</p>
+            <h1 class="section-title">Administraator</h1>
+            <p class="section-description">Tee, lisa või muuda üritusi.</p>
 
             <div class="calendar-section">
-                <h2 class="calendar-header-title">Calendar</h2>
-                <p class="calendar-header-description">Schedule and manage events seamlessly.</p>
+                <h2 class="calendar-header-title">Kalender</h2>
+                <p class="calendar-header-description">Loo või muuda üritusi ja treeninguid.</p>
                 <AdminCalendar />
             </div>
         </div>

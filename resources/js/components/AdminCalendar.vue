@@ -132,24 +132,24 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 <template>
     <div class="calendar-container">
         <button @click="showForm = !showForm" class="add-btn">
-            {{ showForm ? 'Cancel' : 'Add Event' }}
+            {{ showForm ? 'Katkesta' : 'Lisa üritus' }}
         </button>
 
         <div v-if="showForm" class="event-form">
             <input v-model="newEvent.title" type="text" placeholder="Title" required class="input-field" />
             <input v-model="newEvent.date" type="date" required class="input-field" />
-            <textarea v-model="newEvent.description" placeholder="Description" class="description-input"></textarea>
+            <textarea v-model="newEvent.description" placeholder="Kirjeldus" class="description-input"></textarea>
             <div class="time-select">
                 <select v-model="newEvent.startTime" required class="time-field">
-                    <option disabled value="">Start Time</option>
+                    <option disabled value="">Algus aeg</option>
                     <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
                 </select>
                 <select v-model="newEvent.endTime" required class="time-field">
-                    <option disabled value="">End Time</option>
+                    <option disabled value="">Lõpu aeg</option>
                     <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
                 </select>
             </div>
-            <button @click="handleAddEvent" class="submit-btn">Save</button>
+            <button @click="handleAddEvent" class="submit-btn">Salvesta</button>
         </div>
 
         <VueCal

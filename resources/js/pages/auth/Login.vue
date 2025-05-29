@@ -31,69 +31,69 @@ const submit = () => {
 
 <template>
     <Navigation></Navigation>
+    <div class="justify-top container mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center">
+        <AuthBase title="Logi sisse oma kasutajasse" description="Sisesta oma email ja parool, et siseneda.">
+            <Head title="Logi sisse" />
 
-    <AuthBase title="Log in to your account" description="Enter your email and password below to log in">
-        <Head title="Log in" />
+            <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
+                {{ status }}
+            </div>
 
-        <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
-            {{ status }}
-        </div>
-
-        <form @submit.prevent="submit" class="flex flex-col gap-6">
-            <div class="grid gap-6">
-                <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        required
-                        autofocus
-                        :tabindex="1"
-                        autocomplete="email"
-                        v-model="form.email"
-                        placeholder="email@example.com"
-                    />
-                    <InputError :message="form.errors.email" />
-                </div>
-
-                <div class="grid gap-2">
-                    <div class="flex items-center justify-between">
-                        <Label for="password">Password</Label>
-                        <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm" :tabindex="5">
-                            Forgot password?
-                        </TextLink>
+            <form @submit.prevent="submit" class="flex flex-col gap-6">
+                <div class="grid gap-6">
+                    <div class="grid gap-2">
+                        <Label for="email">Emaili aadress</Label>
+                        <Input
+                            id="email"
+                            type="email"
+                            required
+                            autofocus
+                            :tabindex="1"
+                            autocomplete="email"
+                            v-model="form.email"
+                            placeholder="email@näidis.ee"
+                        />
+                        <InputError :message="form.errors.email" />
                     </div>
-                    <Input
-                        id="password"
-                        type="password"
-                        required
-                        :tabindex="2"
-                        autocomplete="current-password"
-                        v-model="form.password"
-                        placeholder="Password"
-                    />
-                    <InputError :message="form.errors.password" />
+
+                    <div class="grid gap-2">
+                        <div class="flex items-center justify-between">
+                            <Label for="password">Parool</Label>
+                            <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm" :tabindex="5">
+                                Unustasid parooli?
+                            </TextLink>
+                        </div>
+                        <Input
+                            id="password"
+                            type="password"
+                            required
+                            :tabindex="2"
+                            autocomplete="current-password"
+                            v-model="form.password"
+                            placeholder="Parool"
+                        />
+                        <InputError :message="form.errors.password" />
+                    </div>
+
+                    <div class="flex items-center justify-between" :tabindex="3">
+                        <Label for="remember" class="flex items-center space-x-3">
+                            <Checkbox id="remember" v-model="form.remember" :tabindex="4" />
+                            <span>Mäleta mind</span>
+                        </Label>
+                    </div>
+
+                    <Button type="submit" class="mt-4 w-full" :tabindex="4" :disabled="form.processing">
+                        <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
+                        Logi sisse
+                    </Button>
                 </div>
 
-                <div class="flex items-center justify-between" :tabindex="3">
-                    <Label for="remember" class="flex items-center space-x-3">
-                        <Checkbox id="remember" v-model="form.remember" :tabindex="4" />
-                        <span>Remember me</span>
-                    </Label>
+                <div class="text-muted-foreground text-center text-sm">
+                    Pole veel kasutajat?
+                    <TextLink :href="route('register')" :tabindex="5">Registreeri</TextLink>
                 </div>
-
-                <Button type="submit" class="mt-4 w-full" :tabindex="4" :disabled="form.processing">
-                    <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                    Log in
-                </Button>
-            </div>
-
-            <div class="text-muted-foreground text-center text-sm">
-                Don't have an account?
-                <TextLink :href="route('register')" :tabindex="5">Sign up</TextLink>
-            </div>
-        </form>
-    </AuthBase>
-
+            </form>
+        </AuthBase>
+    </div>
     <MasterFooter></MasterFooter>
 </template>
