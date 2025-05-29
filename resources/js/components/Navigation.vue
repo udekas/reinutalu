@@ -12,6 +12,7 @@ const toggleMobileMenu = () => {
     <header class="bg-opacity-90 fixed z-40 w-full px-4 bg-white shadow-md">
         <nav class="container mx-auto flex items-center justify-between  px-4 py-4 pr-8">
             <div class="logo text-primary flex items-center text-2xl font-bold">
+                <img src="/assets/reinulogo.webp" class="h-12 w-auto"/>
                 <a href="/">Reinu Ratsatalu</a>
             </div>
 

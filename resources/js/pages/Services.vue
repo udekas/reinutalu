@@ -22,7 +22,7 @@ function post(arg0: string) {
         
         <section class="flex h-screen items-center justify-center bg-cover bg-center text-center text-white">
             <div
-                class="justify-top container mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center"
+                class="justify-top container mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.webp)] bg-cover bg-center px-4 text-center"
             >
                 <h1 class="mx-auto mt-24 text-4xl font-bold text-yellow-950 md:text-5xl lg:text-6xl">Koge vabadust hobuse seljas</h1>
                 
