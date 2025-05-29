@@ -7,7 +7,7 @@ import Navigation from '@/components/Navigation.vue';
     <Navigation></Navigation>
     <div class="font-sans text-gray-800">
         <!-- Hero Section -->
-        <section class="container aspect-video max-w-screen bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center">
+        <section class="container aspect-video max-w-screen bg-[url(/assets/DSC_1078.webp)] bg-cover bg-center px-4 text-center">
             <h1 class="hidden sm:block pt-24 mx-auto text-4xl font-bold sm:text-[5vw]">Koge vabadust hobuse seljas</h1>
         </section>
         <!-- Booking Section -->
