@@ -7,7 +7,7 @@ import { Link } from '@inertiajs/vue3';
     <header class="bg-opacity-90 fixed z-40 w-full bg-white shadow-md" :class="{ 'mt-10': showAuthNav }">
         <nav class="container mx-auto flex items-center justify-between py-4 pr-8">
             <div class="logo text-primary flex items-center text-2xl font-bold">
-                <i class="fas fa-horse mr-2"></i>
+                <img src="/assets/reinulogo.webp" class="h-12 w-auto"/>
                 <a href="/">Reinu Ratsatalu</a>
             </div>
 

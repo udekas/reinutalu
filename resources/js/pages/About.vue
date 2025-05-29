@@ -8,7 +8,7 @@ import Navigation from '@/components/Navigation.vue';
 
     <section>
         <div
-            class="container mx-auto flex min-h-screen flex-col items-center justify-start bg-[url(/assets/DSC_0978.JPG)] bg-cover bg-center px-4 pt-10 text-center"
+            class="container mx-auto flex min-h-screen flex-col items-center justify-start bg-[url(/assets/DSC_0978.webp)] bg-cover bg-center px-4 pt-10 text-center"
         >
             <h1 class="text-4xl font-bold text-yellow-950 md:text-5xl lg:text-6xl">Meist</h1>
         </div>

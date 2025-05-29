@@ -11,7 +11,7 @@ import Navigation from '@/components/Navigation.vue';
         <!-- Hero Section -->
         <section class="flex flex-col md:flex-row md:h-screen items-center justify-center bg-cover bg-center text-center text-white">
             <div
-                class="justify-top container pt-10 mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.JPG)] bg-cover bg-center px-4 text-center"
+                class="justify-top container pt-10 mx-auto flex h-full flex-col items-center bg-[url(/assets/DSC_1078.webp)] bg-cover bg-center px-4 text-center"
             >
                 <h1 class="mx-auto mt-24 text-4xl font-bold text-yellow-950 md:text-5xl lg:text-6xl">Koge vabadust hobuse seljas</h1>
                 <p class="mx-auto my-12 max-w-2xl text-xl text-yellow-950 md:text-2xl">
@@ -94,7 +94,7 @@ import Navigation from '@/components/Navigation.vue';
                 </div>
 
                 <div
-                    class="flex h-full min-h-[400px] flex-col items-center justify-center bg-[url(/assets/William.png)] bg-cover bg-center text-center md:w-1/2"
+                    class="flex h-full min-h-[400px] flex-col items-center justify-center bg-[url(/assets/William.webp)] bg-cover bg-center text-center md:w-1/2"
                 ></div>
             </div>
         </section>
