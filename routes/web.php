@@ -48,7 +48,7 @@ Route::get('users', [AdminUserController::class, 'index'])
 
 
 use App\Http\Controllers\BookingController;
-
+use App\Mail\OrderShipped;
 
 Route::post('/booking/send', [BookingController::class, 'send']);
 
@@ -92,6 +92,13 @@ Route::middleware('auth')->group(function () {
     
     Route::get('my-events', [EventRegistrationController::class, 'myEvents']);
 });
+Route::get('/mailable', function () {
+
+    $data = app(OrderShipped::class)->handle();
+ 
+ 
+     return new OrderShipped($data);
+ });
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

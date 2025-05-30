@@ -1,3 +1,33 @@
+      <script setup>
+      import { ref } from 'vue'
+      import { router } from '@inertiajs/vue3'
+      import Navigation from '@/components/Navigation.vue'
+      import MasterFooter from '@/components/MasterFooter.vue'
+      
+      const sending = ref(false)
+      
+      const form = ref({
+        name: '',
+        email: '',
+        datetime: '',
+        message: '',
+      })
+      
+      function submitBooking() {
+        sending.value = true
+      
+        router.post('/booking/send', form.value, {
+          onFinish: () => {
+            sending.value = false
+            alert('Broneerimine saadetud!')
+          },
+          onError: () => {
+            sending.value = false
+            alert('Midagi läks valesti.')
+          },
+        })
+      }
+      </script>
 <template>
     <Navigation></Navigation>
     
@@ -37,33 +67,3 @@
  <MasterFooter></MasterFooter>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { router } from '@inertiajs/vue3'
-import Navigation from '@/components/Navigation.vue'
-import MasterFooter from '@/components/MasterFooter.vue'
-
-const sending = ref(false)
-
-const form = ref({
-  name: '',
-  email: '',
-  datetime: '',
-  message: '',
-})
-
-function submitBooking() {
-  sending.value = true
-
-  router.post('/booking/send', form.value, {
-    onFinish: () => {
-      sending.value = false
-      alert('Broneerimine saadetud!')
-    },
-    onError: () => {
-      sending.value = false
-      alert('Midagi läks valesti.')
-    },
-  })
-}
-</script>
