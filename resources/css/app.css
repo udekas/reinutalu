@@ -7,20 +7,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-.vuecal {
-    --vuecal-primary-color: #1f2937;
-    --vuecal-secondary-color: #c4bebe;
-    --vuecal-base-color: #000000;
-    --vuecal-contrast-color: #000000;
-    --vuecal-border-color: color-mix(in srgb, var(--vuecal-base-color) 8%, transparent);
-    --vuecal-header-color: var(--color-white);
-    --vuecal-event-color: rgb(253, 253, 253);
-    --vuecal-event-border-color: currentColor;
-    --vuecal-border-radius: 6 px;
-    --vuecal-height: 500 px;
-    --vuecal-transition-duration: 0.25 s;
-}
-
 @theme inline {
     --font-sans: Instrument Sans, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 

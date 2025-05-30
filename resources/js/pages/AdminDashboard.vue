@@ -60,7 +60,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 .calendar-header-title {
     font-size: 1.5rem;
-    color: #4f46e5; /* Soft blue for header */
+    color: #1f2937; /* Soft blue for header */
 }
 
 .calendar-header-description {

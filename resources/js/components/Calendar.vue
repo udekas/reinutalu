@@ -48,7 +48,8 @@ onMounted(fetchEvents);
         <template #event="props">
             <div class="flex flex-col">
                 <strong>{{ props.event.title }}</strong>
-                <span v-if="props.event.description" style="font-size: 0.8rem"> {{ props.event.description }} </span><br />
+                <p>{{ props.event._.startTimeFormatted24 }} - {{ props.event._.endTimeFormatted24 }}</p>
+                <!-- <span v-if="props.event.description" style="font-size: 0.8rem"> {{ props.event.description }} </span><br /> -->
             </div>
         </template>
     </VueCal>
@@ -72,8 +73,12 @@ onMounted(fetchEvents);
 
 <style>
 /* ...your existing styles */
+.vuecal__body {
+    grid-template-rows: repeat(6, auto) !important;
+}
+
 .vuecal__cell {
-    height: auto;
+    min-height: 50px;
 }
 .vuecal__event {
     width: 100% !important;
@@ -84,12 +89,15 @@ onMounted(fetchEvents);
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-end;
+    height: auto;
 }
 
 .vuecal--default-theme .vuecal__scrollable--month-view .vuecal__cell-events {
     overflow: hidden;
     flex-grow: 1;
     width: 100%;
-    padding-left: 4px;
+    padding-inline: 4px;
+    padding-bottom: 4px;
+    height: auto;
 }
 </style>
