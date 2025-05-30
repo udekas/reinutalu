@@ -9,8 +9,8 @@ import Navigation from '@/components/Navigation.vue';
 
     <div class="font-sans text-gray-800">
         <!-- Hero Section -->
-        <section class="container aspect-video max-w-screen bg-[url(/assets/DSC_1078.webp)] bg-cover bg-center px-4 text-center">
-            <h1 class="mx-auto hidden pt-24 text-4xl font-bold sm:block sm:text-[5vw]">Koge vabadust hobuse seljas</h1>
+        <<section class="container aspect-video max-w-screen bg-[url(/assets/DSC_1078.webp)] bg-cover bg-center  text-center">
+            <h1 class="mx-auto hidden pt-24 text-4xl font-bold sm:block sm:text-[5vw] shadow-2xl p-4">Koge vabadust hobuse seljas</h1>
         </section>
         <!-- Booking Section -->
         <section id="broneeri" class="bg-secondary py-16">
@@ -23,12 +23,6 @@ import Navigation from '@/components/Navigation.vue';
                         <i class="fas fa-horse-head text-primary mb-4 text-5xl" aria-hidden="true"></i>
                         <h3 class="text-primary mb-3 text-xl font-bold">Matkad looduses</h3>
                         <p class="mb-4">1-2 tunni pikkused ratsamatkad maalilises looduses</p>
-                        <router-link
-                            to="/booking"
-                            class="bg-primary inline-block rounded-md px-6 py-2 text-sm text-white transition hover:bg-[#6d4a2a]"
-                        >
-                            Broneeri
-                        </router-link>
                     </div>
 
                     <!-- Riding Lessons -->
@@ -36,12 +30,6 @@ import Navigation from '@/components/Navigation.vue';
                         <i class="fas fa-graduation-cap text-primary mb-4 text-5xl" aria-hidden="true"></i>
                         <h3 class="text-primary mb-3 text-xl font-bold">Ratsutamise tunnid</h3>
                         <p class="mb-4">Algajatele ja edasijõudnutele kõikidele vanusegruppidele</p>
-                        <router-link
-                            to="/booking"
-                            class="bg-primary inline-block rounded-md px-6 py-2 text-sm text-white transition hover:bg-[#6d4a2a]"
-                        >
-                            Broneeri
-                        </router-link>
                     </div>
 
                     <!-- Special Events -->
@@ -49,28 +37,21 @@ import Navigation from '@/components/Navigation.vue';
                         <i class="fas fa-calendar-alt text-primary mb-4 text-5xl" aria-hidden="true"></i>
                         <h3 class="text-primary mb-3 text-xl font-bold">Eritellimused</h3>
                         <p class="mb-4">Sünnipäevapeod ja grupiüritused</p>
-                        <router-link
-                            to="/inquiry"
-                            class="bg-primary inline-block rounded-md px-6 py-2 text-sm text-white transition hover:bg-[#6d4a2a]"
-                        >
-                            Küsi pakkumist
-                        </router-link>
-                        <div class="my-10">
-                            <a
-                                href="/booking"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="bg-primary inline-block rounded-md px-8 py-3 text-white transition hover:bg-[#6d4a2a8d]"
-                            >
-                                Broneeri sõit
-                            </a>
-                        </div>
                     </div>
+                </div>
+                <div class="mt-5 flex justify-center">
+                    <a
+                        href="/booking"
+                        rel="noopener noreferrer"
+                        class="bg-primary inline-block rounded-md px-8 py-3 text-white transition hover:bg-[#6d4a2a8d]"
+                    >
+                        Broneeri sõit
+                    </a>
                 </div>
 
                 <!-- Calendar -->
-                <div class="mt-10 flex w-full flex-col px-4 md:px-48">
-                    <Calendar class="mx-auto max-h-[400px] w-full max-w-[1000px] bg-white" />
+                <div class="ms:px-48 mt-5 flex w-full flex-col px-8">
+                    <Calendar class="w-full bg-white" />
                 </div>
             </div>
         </section>

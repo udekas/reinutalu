@@ -14,7 +14,7 @@ defineProps<Props>();
 
 <template>
    
-  <img url="assets/reinulogo.jpg" alt="Logo" :class="className" v-bind="$attrs" />
+  <img src="/assets/reinulogo.webp" alt="Logo" :class="className" v-bind="$attrs" />
 </template>
 
 

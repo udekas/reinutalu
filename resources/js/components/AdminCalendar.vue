@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import axios from 'axios';
+import { router, usePage } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 import { VueCal, type CalendarEvent } from 'vue-cal';
 import 'vue-cal/style';
@@ -155,6 +156,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
         <VueCal
             style="height: 700px"
             :events="events"
+            events-on-month-view
             :editable-events="{ create: false, resize: false, drag: false, delete: true }"
             @event-change="handleEventChange"
             @event-delete="handleEventDelete"
@@ -162,13 +164,14 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             :views="['month', 'week', 'day']"
             :time-from="7 * 60"
             :time-to="18 * 60"
-            :time-step="30"
+            :time-step="15"
             :snap-to-interval="30"
             @event-click="handleEventClick"
         >
             <template #event="props">
                 <div class="calendar-event">
                     <strong class="event-title">{{ props.event.title }}</strong>
+                    <p>{{ props.event._.startTimeFormatted24 }} - {{ props.event._.endTimeFormatted24 }}</p>
                     <br />
                     <span v-if="props.event.description" class="event-description">
                         {{ props.event.description }}
@@ -194,6 +197,20 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 </template>
 
 <style scoped>
+.vuecal {
+    --vuecal-primary-color: #1f2937;
+    --vuecal-secondary-color: #c4bebe;
+    --vuecal-base-color: #000000;
+    --vuecal-contrast-color: #000000;
+    --vuecal-border-color: color-mix(in srgb, var(--vuecal-base-color) 8%, transparent);
+    --vuecal-header-color: var(--color-white);
+    --vuecal-event-color: rgb(253, 253, 253);
+    --vuecal-event-border-color: currentColor;
+    --vuecal-border-radius: 6 px;
+    --vuecal-height: 500 px;
+    --vuecal-transition-duration: 0.25 s;
+}
+
 .calendar-container {
     padding: 1rem;
     background-color: #ffffff;
@@ -202,7 +219,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 }
 
 .add-btn {
-    background-color: #4f46e5; /* Match with Admin Dashboard header color */
+    background-color: #1f2937; /* Match with Admin Dashboard header color */
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -214,7 +231,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 }
 
 .add-btn:hover {
-    background-color: #3b3bdb;
+    background-color: #1f2937;
 }
 
 .event-form {
@@ -245,7 +262,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 }
 
 .submit-btn {
-    background-color: #10b981; /* Green for confirmation actions */
+    background-color: #008CBA; /* Green for confirmation actions */
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -274,3 +291,4 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     color: #e0e0e0; /* Light gray for event descriptions */
 }
 </style>
+
