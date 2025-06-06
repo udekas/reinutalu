@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { router, usePage } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 import { VueCal, type CalendarEvent } from 'vue-cal';
 import 'vue-cal/style';
@@ -160,7 +159,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             :editable-events="{ create: false, resize: false, drag: false, delete: true }"
             @event-change="handleEventChange"
             @event-delete="handleEventDelete"
-            view="week"
+            view="month"
             :views="['month', 'week', 'day']"
             :time-from="7 * 60"
             :time-to="18 * 60"
@@ -169,13 +168,11 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             @event-click="handleEventClick"
         >
             <template #event="props">
-                <div class="calendar-event">
-                    <strong class="event-title">{{ props.event.title }}</strong>
+                <div class="padding-2 flex flex-col">
+                    <strong>{{ props.event.title }}</strong
+                    ><br />
+                    <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd"> {{ props.event.description }} </span>
                     <p>{{ props.event._.startTimeFormatted24 }} - {{ props.event._.endTimeFormatted24 }}</p>
-                    <br />
-                    <span v-if="props.event.description" class="event-description">
-                        {{ props.event.description }}
-                    </span>
                 </div>
             </template>
         </VueCal>
@@ -262,7 +259,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 }
 
 .submit-btn {
-    background-color: #008CBA; /* Green for confirmation actions */
+    background-color: #008cba; /* Green for confirmation actions */
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -292,3 +289,33 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 }
 </style>
 
+<style>
+/* ...your existing styles */
+.vuecal--month-view .vuecal__body {
+    grid-template-rows: repeat(6, auto) !important;
+}
+
+.vuecal__cell {
+    min-height: 50px;
+}
+.vuecal--month-view .vuecal__event {
+    width: 100% !important;
+    left: 0 !important;
+}
+
+.vuecal--default-theme.vuecal--lg .vuecal__scrollable--month-view .vuecal__cell {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    height: auto;
+}
+
+.vuecal--default-theme .vuecal__scrollable--month-view .vuecal__cell-events {
+    overflow: hidden;
+    flex-grow: 1;
+    width: 100%;
+    padding-inline: 4px;
+    padding-bottom: 4px;
+    height: auto;
+}
+</style>

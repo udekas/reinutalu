@@ -61,9 +61,9 @@ import Navigation from '@/components/Navigation.vue';
             <div class="container mx-auto px-4 text-center">
                 <h2 class="text-primary mb-6 text-3xl font-bold md:text-4xl">Meie hobused</h2>
                 <p class="mx-auto mb-8 max-w-2xl">Tutvuge meie sõbralike ja kogenud hobustega, kes teevad iga sõidu eriliseks kogemuseks.</p>
-                <router-link to="/gallery" class="bg-primary inline-block rounded-md px-6 py-2 text-white transition hover:bg-[#6d4a2a]">
+                <a href="gallery" class="bg-primary inline-block rounded-md px-6 py-2 text-white transition hover:bg-[#6d4a2a]">
                     Vaata galeriid
-                </router-link>
+                </a>
             </div>
         </section>
 
@@ -76,9 +76,9 @@ import Navigation from '@/components/Navigation.vue';
                         Meie 50 hektari suurune talu pakub ideaalsed tingimused nii algajatele kui kogenud ratsanikele. Avarad karjamaad, ratsakooli
                         väljakud ja ligipääs maalilistele matkaradadele tagavad meeldiva ja turvalise ratsutamiskogemuse.
                     </p>
-                    <router-link to="/about" class="bg-primary inline-block self-start rounded-md px-6 py-2 text-white transition hover:bg-[#6d4a2a]">
+                    <a href="about" class="bg-primary inline-block self-start rounded-md px-6 py-2 text-white transition hover:bg-[#6d4a2a]">
                         Loe lähemalt
-                    </router-link>
+                    </a>
                 </div>
 
                 <div

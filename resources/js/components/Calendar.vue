@@ -38,7 +38,7 @@ onMounted(fetchEvents);
         :editable-events="{ create: false, resize: false, drag: false, delete: false }"
         :events="events"
         events-on-month-view
-        :views="{ days: { cols: 5, rows: 1 }, month: {} }"
+        :views="{ month: {} }"
         view="month"
         :time-from="7 * 60"
         :time-to="21 * 60"
@@ -71,16 +71,16 @@ onMounted(fetchEvents);
 }
 </style>
 
-<style>
+<style >
 /* ...your existing styles */
-.vuecal__body {
+.vuecal--month-view .vuecal__body {
     grid-template-rows: repeat(6, auto) !important;
 }
 
 .vuecal__cell {
     min-height: 50px;
 }
-.vuecal__event {
+.vuecal--month-view .vuecal__event {
     width: 100% !important;
     left: 0 !important;
 }

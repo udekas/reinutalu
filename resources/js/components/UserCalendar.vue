@@ -138,28 +138,14 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 
 <template>
     <div class="calendar-container">
-        <div v-if="showForm" class="event-form">
-            <input v-model="newEvent.title" type="text" placeholder="Title" required />
-            <input v-model="newEvent.date" type="date" required />
-            <textarea v-model="newEvent.description" placeholder="Description" class="description-input"></textarea>
-            <select v-model="newEvent.startTime" required>
-                <option disabled value="">Start Time</option>
-                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-            </select>
-            <select v-model="newEvent.endTime" required>
-                <option disabled value="">End Time</option>
-                <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
-            </select>
-            <button @click="handleAddEvent" class="submit-btn">Save</button>
-        </div>
-
         <VueCal
             style="height: 700px"
             :events="events"
+            events-on-month-view
             :editable-events="{ create: false, resize: false, drag: false, delete: false }"
             @event-change="handleEventChange"
             @event-delete="handleEventDelete"
-            view="week"
+            view="month"
             :views="['month', 'week', 'day']"
             :time-from="7 * 60"
             :time-to="18 * 60"
@@ -167,19 +153,19 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             :snap-to-interval="30"
         >
             <template #event="props">
-                <div>
+                <div class="padding-2 flex flex-col">
                     <strong>{{ props.event.title }}</strong
-                    ><br />
-                    <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd">
-                        {{ props.event.description }} </span
-                    ><br />
+                        ><br />
+                        <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd"> {{ props.event.description }} </span>
+                        <p>{{ props.event._.startTimeFormatted24 }} - {{ props.event._.endTimeFormatted24 }}</p>
+                        <br />
 
                     <button v-if="isRegistered(props.event)" @click="unregister(props.event.id)" class="submit-btn bg-red-500 hover:bg-red-600">
                         Unregister
                     </button>
 
                     <button v-else @click="register(props.event.id)" class="submit-btn" :disabled="new Date(props.event.start) < new Date()">
-                        Register
+                        Registreeri
                     </button>
                 </div>
             </template>
@@ -189,44 +175,26 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
 
 <style scoped>
 /* Your scoped styles here */
+.vuecal {
+    --vuecal-primary-color: #1f2937;
+    --vuecal-secondary-color: #c4bebe;
+    --vuecal-base-color: #000000;
+    --vuecal-contrast-color: #000000;
+    --vuecal-border-color: color-mix(in srgb, var(--vuecal-base-color) 8%, transparent);
+    --vuecal-header-color: var(--color-white);
+    --vuecal-event-color: rgb(253, 253, 253);
+    --vuecal-event-border-color: currentColor;
+    --vuecal-border-radius: 6 px;
+    --vuecal-height: 500 px;
+    --vuecal-transition-duration: 0.25 s;
+}
+
 .calendar-container {
     padding: 1rem;
     font-family: Arial, sans-serif;
 }
-
-.add-btn {
-    background-color: #4f46e5;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.event-form {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-}
-
-.event-form input {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-}
-
-.event-form select {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background-color: white;
-    font-size: 1rem;
-}
-
 .submit-btn {
-    background-color: #10b981;
+    background-color: #008cba;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -241,5 +209,39 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     border-radius: 6px;
     min-height: 60px;
     resize: vertical;
+}
+</style>
+<style>
+/* ...your existing styles */
+.vuecal--month-view .vuecal__body {
+    grid-template-rows: repeat(6, auto) !important;
+}
+
+.vuecal__cell {
+    min-height: 50px;
+}
+.vuecal--month-view .vuecal__event {
+    width: 100% !important;
+    left: 0 !important;
+}
+
+.vuecal--default-theme.vuecal--lg .vuecal__scrollable--month-view .vuecal__cell {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    height: auto;
+}
+
+.vuecal--default-theme .vuecal__scrollable--month-view .vuecal__cell-events {
+    overflow: hidden;
+    flex-grow: 1;
+    width: 100%;
+    padding-inline: 4px;
+    padding-bottom: 4px;
+    height: auto;
+}
+
+.vuecal--week-view .vuecal__event--details--span {
+    padding: 1rem;
 }
 </style>
