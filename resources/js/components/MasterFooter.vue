@@ -32,11 +32,18 @@
                     <div class="flex space-x-4">
                         <a
                             href="https://www.facebook.com/p/Reinu-Ratsatalu-100064752306318/?locale=et_EE"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             class="hover:text-primary text-2xl text-white transition"
                         >
                             <i class="fab fa-facebook"></i>
                         </a>
-                        <a href="https://www.instagram.com/reinutalu/" class="hover:text-primary text-2xl text-white transition">
+                        <a
+                            href="https://www.instagram.com/reinutalu/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="hover:text-primary text-2xl text-white transition"
+                        >
                             <i class="fab fa-instagram"></i>
                         </a>
                     </div>
