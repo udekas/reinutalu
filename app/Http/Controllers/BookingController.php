@@ -3,6 +3,8 @@
 
     namespace App\Http\Controllers;
 
+use App\Mail\BookingConfirmation;
+use App\Mail\BookingReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -17,16 +19,13 @@ class BookingController extends Controller
             'message' => 'nullable|string',
         ]);
 
-        Mail::raw("Uus broneering:\n\n"
-            . "Nimi: {$validated['name']}\n"
-            . "E-post: {$validated['email']}\n"
-            . "Aeg: {$validated['datetime']}\n"
-            . "Sõnum: {$validated['message']}", function ($message) use ($validated) {
-            $message->to('sinu@epost.ee') // <- siia oma e-post
-                    ->subject('Uus hobusesõidu broneering');
-        });
+        // 1. Send booking info to you
+        Mail::to('jurgen-mark.heinmets@ametikool.ee')->send(new BookingReceived($validated));
 
-        return back();
+        // 2. Send confirmation to the user
+        Mail::to($validated['email'])->send(new BookingConfirmation($validated));
+
+        return back()->with('success', 'Broneerimine saadetud!');
     }
 }
 
