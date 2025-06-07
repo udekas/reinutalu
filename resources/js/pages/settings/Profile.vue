@@ -64,7 +64,7 @@ const submit = () => {
                             v-model="form.email"
                             required
                             autocomplete="username"
-                            placeholder="Email address"
+                            placeholder="Emaili aadress"
                         />
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>

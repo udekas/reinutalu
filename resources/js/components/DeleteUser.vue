@@ -44,23 +44,22 @@ const closeModal = () => {
 
 <template>
     <div class="space-y-6">
-        <HeadingSmall title="Delete account" description="Delete your account and all of its resources" />
+        <HeadingSmall title="Kustuta oma konto" description="Kustuta oma konto ja kõik andmed." />
         <div class="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
             <div class="relative space-y-0.5 text-red-600 dark:text-red-100">
-                <p class="font-medium">Warning</p>
-                <p class="text-sm">Please proceed with caution, this cannot be undone.</p>
+                <p class="font-medium">Tähelepanu</p>
+                <p class="text-sm">Palun mõtle hoolega, seda tegevust ei saa tagasi võtta.</p>
             </div>
             <Dialog>
                 <DialogTrigger as-child>
-                    <Button variant="destructive">Delete account</Button>
+                    <Button variant="destructive">Kustuta konto</Button>
                 </DialogTrigger>
                 <DialogContent>
                     <form class="space-y-6" @submit="deleteUser">
                         <DialogHeader class="space-y-3">
-                            <DialogTitle>Are you sure you want to delete your account?</DialogTitle>
+                            <DialogTitle>Kas oled kindel et soovid kustutada?</DialogTitle>
                             <DialogDescription>
-                                Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your
-                                password to confirm you would like to permanently delete your account.
+                                Kui teie konto on kustutatud, kustutatakse jäädavalt ka kõik selle ressursid ja andmed. Palun sisestage oma parool, et kinnitada, et soovite oma konto jäädavalt kustutada.
                             </DialogDescription>
                         </DialogHeader>
 
@@ -72,11 +71,11 @@ const closeModal = () => {
 
                         <DialogFooter class="gap-2">
                             <DialogClose as-child>
-                                <Button variant="secondary" @click="closeModal"> Cancel </Button>
+                                <Button variant="secondary" @click="closeModal"> Katkesta </Button>
                             </DialogClose>
 
                             <Button variant="destructive" :disabled="form.processing">
-                                <button type="submit">Delete account</button>
+                                <button type="submit">Kustuta konto</button>
                             </Button>
                         </DialogFooter>
                     </form>
