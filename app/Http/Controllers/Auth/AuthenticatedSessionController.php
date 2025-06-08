@@ -44,7 +44,7 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('dashboard');
     }
 
-    return back()->withErrors(['email' => 'Invalid credentials']);
+    return back()->withErrors(['email' => 'Vale email või parool']);
 }
 
     /**

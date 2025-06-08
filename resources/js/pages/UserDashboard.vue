@@ -6,7 +6,7 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
 // Define breadcrumb data
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Dashboard', href: '/dashboard' }];
+const breadcrumbs: BreadcrumbItem[] = [{ title: '', href: '/dashboard' }];
 
 // Define user data and events
 const user = ref<any>(null); // Initially null

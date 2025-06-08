@@ -7,17 +7,17 @@ import { Link, usePage } from '@inertiajs/vue3';
 
 const sidebarNavItems: NavItem[] = [
     {
-        title: 'Profile',
+        title: 'Minu konto',
         href: '/settings/profile',
     },
     {
-        title: 'Password',
+        title: 'Parooli seaded',
         href: '/settings/password',
     },
-    {
-        title: 'Appearance',
-        href: '/settings/appearance',
-    },
+    // {
+    //         // title: 'Appearance',
+    //         // href: '/settings/appearance',
+    // },
 ];
 
 const page = usePage();
@@ -27,7 +27,7 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
 
 <template>
     <div class="px-4 py-6">
-        <Heading title="Settings" description="Manage your profile and account settings" />
+        <Heading title="Seaded" description="Muuda oma konto või parooli sätteid." />
 
         <div class="flex flex-col space-y-8 md:space-y-0 lg:flex-row lg:space-x-12 lg:space-y-0">
             <aside class="w-full max-w-xl lg:w-48">

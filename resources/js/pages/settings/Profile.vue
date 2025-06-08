@@ -20,7 +20,7 @@ defineProps<Props>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Profile settings',
+        title: '',
         href: '/settings/profile',
     },
 ];
@@ -42,7 +42,7 @@ const submit = () => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
-        <Head title="Profile settings" />
+        <Head title="" />
 
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
@@ -71,7 +71,7 @@ const submit = () => {
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
                         <p class="-mt-4 text-sm text-muted-foreground">
-                            Your email address is unverified.
+                            Vale meiliaadress.
                             <Link
                                 :href="route('verification.send')"
                                 method="post"
@@ -88,7 +88,7 @@ const submit = () => {
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button :disabled="form.processing">Save</Button>
+                        <Button :disabled="form.processing">Salvesta</Button>
 
                         <Transition
                             enter-active-class="transition ease-in-out"
