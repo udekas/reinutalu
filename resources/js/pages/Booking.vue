@@ -34,7 +34,7 @@ function submitBooking() {
 }
 </script>
 <template>
-    <Navigation></Navigation>
+    <Navigation />
 
     <div class="flex min-h-screen items-center justify-center bg-white p-6">
         <form @submit.prevent="submitBooking" class="w-full max-w-lg rounded-lg bg-white p-8 shadow-md">
@@ -65,5 +65,5 @@ function submitBooking() {
             </button>
         </form>
     </div>
-    <MasterFooter></MasterFooter>
+    <MasterFooter />
 </template>
