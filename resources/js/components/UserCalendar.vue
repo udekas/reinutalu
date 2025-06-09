@@ -43,67 +43,6 @@ const fetchEvents = async () => {
 
 onMounted(fetchEvents);
 
-const handleAddEvent = async () => {
-    const { title, date, startTime, endTime, description } = newEvent.value;
-    if (!title || !date || !startTime || !endTime) {
-        alert('Please fill in all fields');
-        return;
-    }
-
-    const start = new Date(`${date}T${startTime}`);
-    const end = new Date(`${date}T${endTime}`);
-
-    try {
-        await axios.post('/events', {
-            title,
-            description,
-            start: start.toISOString(),
-            end: end.toISOString(),
-        });
-
-        await fetchEvents();
-        showForm.value = false;
-
-        newEvent.value = {
-            title: '',
-            date: '',
-            startTime: '',
-            endTime: '',
-            description: '',
-        };
-    } catch (error) {
-        console.error('Error adding event:', error);
-    }
-};
-
-const handleEventChange = async ({ event }: { event: CalendarEvent }) => {
-    try {
-        const res = await axios.put(`/events/${event.id}`, {
-            title: event.title,
-            start: new Date(event.start).toISOString(),
-            end: new Date(event.end).toISOString(),
-        });
-        const index = events.value.findIndex((e) => e.id === event.id);
-        if (index !== -1) events.value[index] = res.data;
-    } catch (error) {
-        console.error('Update failed:', error);
-    }
-};
-
-const handleEventDelete = async (event: CalendarEvent) => {
-    if (!event || !event.id) {
-        console.error('Event object or event.id is missing:', event);
-        return;
-    }
-
-    try {
-        await axios.delete(`/events/${event.id}`);
-        events.value = events.value.filter((e) => e.id !== event.id);
-    } catch (error) {
-        console.error('Delete failed:', error);
-    }
-};
-
 // REGISTER/UNREGISTER LOGIC
 const isRegistered = (event: any) => {
     return event.users?.some((u: any) => u.id === user.value.id);
@@ -143,20 +82,18 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
             :events="events"
             events-on-month-view
             :editable-events="{ create: false, resize: false, drag: false, delete: false }"
-            @event-change="handleEventChange"
-            @event-delete="handleEventDelete"
             view="month"
             :views="['month', 'week', 'day']"
             :time-from="7 * 60"
             :time-to="18 * 60"
-            :time-step="30"
+            :time-step="15"
             :snap-to-interval="30"
         >
             <template #event="props">
                 <div class="padding-2 flex flex-col">
                     <strong>{{ props.event.title }}</strong
                         ><br />
-                        <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd"> {{ props.event.description }} </span>
+                        <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd; overflow: hidden; white-space: normal; padding-bottom: 0.5rem;"> {{ props.event.description }} </span>
                         <p>{{ props.event._.startTimeFormatted24 }} - {{ props.event._.endTimeFormatted24 }}</p>
                         <br />
 
@@ -197,7 +134,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     background-color: #008cba;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
     border-radius: 8px;
     cursor: pointer;
 }
@@ -241,7 +178,11 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
     height: auto;
 }
 
-.vuecal--week-view .vuecal__event--details--span {
-    padding: 1rem;
+.vuecal__event-details {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    overflow: break-word;
+    white-space: normal;
 }
 </style>

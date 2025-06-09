@@ -171,7 +171,7 @@ const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
                 <div class="padding-2 flex flex-col">
                     <strong>{{ props.event.title }}</strong
                     ><br />
-                    <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd"> {{ props.event.description }} </span>
+                    <span v-if="props.event.description" style="font-size: 0.8rem; color: #ddd; overflow: hidden; white-space: normal; padding-bottom: 0.5rem;"> {{ props.event.description }} </span>
                     <p>{{ props.event._.startTimeFormatted24 }} - {{ props.event._.endTimeFormatted24 }}</p>
                 </div>
             </template>
