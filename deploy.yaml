@@ -3,6 +3,7 @@ import:
 
 config:
   repository: 'git@github.com:udekas/reinutalu.git'
+  keep_releases: 2
 
 
 hosts:
